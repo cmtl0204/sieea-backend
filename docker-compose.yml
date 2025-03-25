@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  node-app:
+    build: .
+    container_name: node-pm2
+    restart: unless-stopped
+    ports:
+      - "3000:3000"   # Mapea el puerto del host al contenedor
+    volumes:
+      - ./app:/app     # Monta el código (opcional, útil en desarrollo)
+      - /app/node_modules  # Evita sobrescribir node_modules
+    environment:
+      - NODE_ENV=production
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
