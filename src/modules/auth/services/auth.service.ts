@@ -139,8 +139,8 @@ export class AuthService {
 
     return {
       data: {
-        token: await this.generateJwt(user),
-        user: userRest,
+        accessToken: await this.generateJwt(user),
+        auth: userRest,
       },
     };
   }
