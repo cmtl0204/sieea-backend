@@ -31,6 +31,8 @@ import { config } from '@config';
 import { ConfigType } from '@nestjs/config';
 import { MailDataInterface } from '@modules/common/mail/interfaces/mail-data.interface';
 import { UsersService } from './users.service';
+import axios from 'axios';
+import { catchError } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -403,5 +405,13 @@ export class AuthService {
     }
 
     return false;
+  }
+
+  async verifyRecaptcha(token: string): Promise<ServiceResponseHttpModel> {
+    return (
+      await axios.post(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${this.configService.recaptchaSiteSecret}&response=${token}`,
+      )
+    ).data;
   }
 }

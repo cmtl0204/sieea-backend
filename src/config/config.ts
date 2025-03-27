@@ -22,6 +22,7 @@ export const config = registerAs('config', () => {
     },
     apiKey: process.env.API_KEY,
     jwtSecret: process.env.JWT_SECRET,
+    recaptchaSiteSecret: process.env.RECAPTCHA_SITE_SECRET,
     port: parseInt(process.env.PORT!, 10),
     appUrl: process.env.APP_URL,
   };

@@ -8,7 +8,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  Put,
+  Put, Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -210,6 +210,19 @@ export class AuthController {
       data: response,
       message: 'Imagen Subida Correctamente',
       title: 'Imagen Subida',
+    };
+  }
+
+  @PublicRoute()
+  @Post('verify-recaptcha')
+  @HttpCode(HttpStatus.OK)
+  async verifyRecaptcha(@Query('token') token: string): Promise<ResponseHttpModel> {
+    const response = await this.authService.verifyRecaptcha(token);
+
+    return {
+      data: response,
+      message: ``,
+      title: '',
     };
   }
 }
