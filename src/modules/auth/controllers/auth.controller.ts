@@ -8,7 +8,8 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
-  Put, Query,
+  Put,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -34,12 +35,12 @@ import { getFileName, imageFilter } from '@shared/helpers';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @ApiOperation({ summary: 'Login' })
+  @ApiOperation({ summary: 'Sign In' })
   @PublicRoute()
-  @Post('login')
+  @Post('sign-in')
   @HttpCode(HttpStatus.CREATED)
-  async login(@Body() payload: LoginDto): Promise<ResponseHttpModel> {
-    const serviceResponse = await this.authService.login(payload);
+  async signIn(@Body() payload: LoginDto): Promise<ResponseHttpModel> {
+    const serviceResponse = await this.authService.signIn(payload);
 
     return {
       data: serviceResponse.data,
@@ -216,7 +217,9 @@ export class AuthController {
   @PublicRoute()
   @Post('verify-recaptcha')
   @HttpCode(HttpStatus.OK)
-  async verifyRecaptcha(@Query('token') token: string): Promise<ResponseHttpModel> {
+  async verifyRecaptcha(
+    @Query('token') token: string,
+  ): Promise<ResponseHttpModel> {
     const response = await this.authService.verifyRecaptcha(token);
 
     return {

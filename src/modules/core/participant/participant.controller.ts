@@ -32,7 +32,9 @@ export class ParticipantController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() payload: CreateCatalogueDto): Promise<ResponseHttpModel> {
+  async create(
+    @Body() payload: CreateCatalogueDto,
+  ): Promise<ResponseHttpModel> {
     const data = await this._participantService.create(payload);
 
     return {
@@ -45,7 +47,9 @@ export class ParticipantController {
   @ApiOperation({ summary: 'List of catalogues' })
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(@Query() params: FilterParticipantDto): Promise<ResponseHttpModel> {
+  async findAll(
+    @Query() params: FilterParticipantDto,
+  ): Promise<ResponseHttpModel> {
     const response = await this._participantService.findAll(params);
 
     return {
@@ -58,13 +62,15 @@ export class ParticipantController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<ResponseHttpModel> {
+  async findOne(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<ResponseHttpModel> {
     const data = await this._participantService.findOne(id);
     return {
       data,
       message: `show ${id}`,
       title: `Success`,
-    } ;
+    };
   }
 
   @Put(':id')
@@ -84,7 +90,9 @@ export class ParticipantController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.CREATED)
-  async remove(@Param('id', ParseUUIDPipe) id: string): Promise<ResponseHttpModel> {
+  async remove(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<ResponseHttpModel> {
     const data = await this._participantService.remove(id);
 
     return {

@@ -46,8 +46,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
         errorResponseHttpModel.message = message;
       }
 
+      console.log('1');
       if (exception instanceof UnauthorizedException) {
-        errorResponseHttpModel.error = error || 'Credenciales no válidas';
+        console.log('2');
+        errorResponseHttpModel.error = 'Credenciales no válidas';
         errorResponseHttpModel.message =
           message ?? 'You do not have authorization.';
       }

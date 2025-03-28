@@ -1,5 +1,5 @@
 import { CatalogueDto } from './catalogue.dto';
-import {  IsUUID } from 'class-validator';
+import { IsUUID } from 'class-validator';
 
 export class SeedCatalogueParentDto extends CatalogueDto {
   @IsUUID()

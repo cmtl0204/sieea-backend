@@ -94,7 +94,7 @@ export class AuthService {
     return true;
   }
 
-  async login(payload: LoginDto): Promise<ServiceResponseHttpModel> {
+  async signIn(payload: LoginDto): Promise<ServiceResponseHttpModel> {
     const user: UserEntity | null = await this.repository.findOne({
       select: {
         id: true,
@@ -135,7 +135,7 @@ export class AuthService {
       );
     }
 
-    const { password, suspendedAt, maxAttempts, ...userRest } = user;
+    const { password, suspendedAt, maxAttempts,roles, ...userRest } = user;
 
     await this.repository.update(user.id, { activatedAt: new Date() });
 
@@ -143,6 +143,7 @@ export class AuthService {
       data: {
         accessToken: await this.generateJwt(user),
         auth: userRest,
+        roles
       },
     };
   }
@@ -407,11 +408,14 @@ export class AuthService {
     return false;
   }
 
-  async verifyRecaptcha(token: string): Promise<ServiceResponseHttpModel> {
-    return (
-      await axios.post(
-        `https://www.google.com/recaptcha/api/siteverify?secret=${this.configService.recaptchaSiteSecret}&response=${token}`,
-      )
-    ).data;
+  async verifyRecaptcha(token: string): Promise<any> {
+    const response = await axios.post<any>(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${this.configService.recaptchaSiteSecret}&response=${token}`,
+    );
+
+    return {
+      success: response.data.success,
+      score: response.data.score,
+    };
   }
 }
