@@ -6,7 +6,7 @@ import {
   UpdateCatalogueDto,
 } from '@modules/common/catalogue/dto';
 import { CatalogueEntity } from '@modules/common/catalogue/catalogue.entity';
-import { CoreRepositoryEnum } from '@shared/enums';
+import { CommonRepositoryEnum, CoreRepositoryEnum } from '@shared/enums';
 import { ServiceResponseHttpModel } from '@shared/interfaces';
 import { UserEntity } from '@auth/entities';
 import { PaginationDto } from '@shared/dto';
@@ -19,7 +19,7 @@ export class ParticipantService {
   clientRedis: any = null;
 
   constructor(
-    @Inject(CoreRepositoryEnum.CATALOGUE_REPOSITORY)
+    @Inject(CommonRepositoryEnum.CATALOGUE_REPOSITORY)
     private repository: Repository<CatalogueEntity>,
   ) {}
 

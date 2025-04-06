@@ -10,8 +10,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('catalogues', { schema: 'common' })
-export class CatalogueEntity {
+@Entity('dpa', { schema: 'common' })
+export class DpaEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -48,15 +48,15 @@ export class CatalogueEntity {
   isVisible: boolean;
 
   /** Inverse Relationship **/
-  @OneToMany(() => CatalogueEntity, (category) => category.parent)
-  children: CatalogueEntity[];
+  @OneToMany(() => DpaEntity, (category) => category.parent)
+  children: DpaEntity[];
 
   /** Foreign Keys **/
-  @ManyToOne(() => CatalogueEntity, (category) => category.children, {
+  @ManyToOne(() => DpaEntity, (category) => category.children, {
     nullable: true,
   })
   @JoinColumn({ name: 'parent_id' })
-  parent: CatalogueEntity;
+  parent: DpaEntity;
   @Column({
     type: 'uuid',
     name: 'parent_id',

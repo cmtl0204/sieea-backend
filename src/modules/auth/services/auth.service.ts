@@ -135,7 +135,7 @@ export class AuthService {
       );
     }
 
-    const { password, suspendedAt, maxAttempts,roles, ...userRest } = user;
+    const { password, suspendedAt, maxAttempts, roles, ...userRest } = user;
 
     await this.repository.update(user.id, { activatedAt: new Date() });
 
@@ -143,7 +143,7 @@ export class AuthService {
       data: {
         accessToken: await this.generateJwt(user),
         auth: userRest,
-        roles
+        roles,
       },
     };
   }

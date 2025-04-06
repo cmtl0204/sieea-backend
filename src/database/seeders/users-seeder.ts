@@ -13,6 +13,8 @@ import { UsersService } from '@auth/services/users.service';
 export class UsersSeeder {
   private identificationTypes: CatalogueEntity[] = [];
   private roles: RoleEntity[] = [];
+  private nationalities: CatalogueEntity[] = [];
+  private genders: CatalogueEntity[] = [];
 
   constructor(
     private rolesService: RolesService,
@@ -37,6 +39,14 @@ export class UsersSeeder {
     this.identificationTypes = catalogues.filter(
       (catalogue) => catalogue.type === CatalogueTypeEnum.IDENTIFICATION_TYPE,
     );
+
+    this.nationalities = catalogues.filter(
+      (catalogue) => catalogue.type === CatalogueTypeEnum.NATIONALITY,
+    );
+
+    this.genders = catalogues.filter(
+      (catalogue) => catalogue.type === CatalogueTypeEnum.GENDER,
+    );
   }
 
   async createUsers() {
@@ -46,7 +56,7 @@ export class UsersSeeder {
 
     users.push({
       birthdate: faker.date.birthdate(),
-      cellPhone: '',
+      cellPhone: '0987654321',
       identification: 'user1',
       email: 'admin@correo.com',
       lastname: 'Perez',
@@ -56,6 +66,8 @@ export class UsersSeeder {
       personalEmail: faker.internet.email(),
       roles: [adminRole],
       username: 'admin',
+      nationality: this.nationalities.find((item) => item.code === 'ecu'),
+      gender: this.genders.find((item) => item.code === 'm'),
     });
 
     for (const user of users) {

@@ -8,6 +8,8 @@ import {
   AuditEntity,
 } from '@auth/entities';
 import { ConfigEnum, AuthRepositoryEnum } from '@shared/enums';
+import { AddressEntity } from '@auth/entities/address.entity';
+import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 
 export const authProviders = [
   {
@@ -44,6 +46,18 @@ export const authProviders = [
     provide: AuthRepositoryEnum.TRANSACTIONAL_CODE_REPOSITORY,
     useFactory: (dataSource: DataSource) =>
       dataSource.getRepository(TransactionalCodeEntity),
+    inject: [ConfigEnum.PG_DATA_SOURCE],
+  },
+  {
+    provide: AuthRepositoryEnum.ADDRESS_REPOSITORY,
+    useFactory: (dataSource: DataSource) =>
+      dataSource.getRepository(AddressEntity),
+    inject: [ConfigEnum.PG_DATA_SOURCE],
+  },
+  {
+    provide: AuthRepositoryEnum.ADDITIONAL_INFORMATION_REPOSITORY,
+    useFactory: (dataSource: DataSource) =>
+      dataSource.getRepository(AdditionalInformationEntity),
     inject: [ConfigEnum.PG_DATA_SOURCE],
   },
 ];

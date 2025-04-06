@@ -163,4 +163,60 @@ export class UsersController {
       title: `Suspendido`,
     };
   }
+
+  @ApiOperation({ summary: 'Find Personal Information' })
+  @Auth()
+  @Get(':id/personal-information')
+  @HttpCode(HttpStatus.OK)
+  async findPersonalInformation(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse = await this.usersService.findPersonalInformation(id);
+
+    return {
+      data: serviceResponse,
+      message: `show ${id}`,
+      title: `Success`,
+    };
+  }
+
+  @ApiOperation({ summary: 'Update Personal Information' })
+  @Auth()
+  @Put(':id/personal-information')
+  @HttpCode(HttpStatus.CREATED)
+  async updatePersonalInformation(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() payload: any,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse = await this.usersService.updatePersonalInformation(
+      id,
+      payload,
+    );
+
+    return {
+      data: serviceResponse,
+      message: `Información Actualizada Correctamente`,
+      title: `Actualizado`,
+    };
+  }
+
+  @ApiOperation({ summary: 'Update Bank Detail' })
+  @Auth()
+  @Put(':id/bank-detail')
+  @HttpCode(HttpStatus.CREATED)
+  async updateBankDetail(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() payload: any,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse = await this.usersService.updateBankDetail(
+      id,
+      payload,
+    );
+
+    return {
+      data: serviceResponse,
+      message: `Información Actualizada Correctamente`,
+      title: `Actualizado`,
+    };
+  }
 }

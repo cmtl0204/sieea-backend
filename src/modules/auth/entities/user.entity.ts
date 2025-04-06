@@ -2,7 +2,6 @@ import {
   PrimaryGeneratedColumn,
   Column,
   Entity,
-  OneToOne,
   ManyToOne,
   JoinColumn,
   CreateDateColumn,
@@ -11,14 +10,17 @@ import {
   BeforeInsert,
   BeforeUpdate,
   ManyToMany,
-  OneToMany,
   AfterInsert,
   AfterUpdate,
   AfterRemove,
+  OneToMany,
+  OneToOne,
 } from 'typeorm';
 import * as Bcrypt from 'bcrypt';
 import { RoleEntity } from '@auth/entities';
 import { CatalogueEntity } from '@modules/common/catalogue/catalogue.entity';
+import { AddressEntity } from '@auth/entities/address.entity';
+import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 
 @Entity('users', { schema: 'auth' })
 export class UserEntity {
@@ -49,6 +51,15 @@ export class UserEntity {
   /** Inverse Relationship **/
   @ManyToMany(() => RoleEntity, (role) => role.users)
   roles: RoleEntity[];
+
+  @OneToOne(() => AddressEntity, (address) => address.user)
+  address: AddressEntity;
+
+  @OneToOne(
+    () => AdditionalInformationEntity,
+    (additionalInformation) => additionalInformation.user,
+  )
+  additionalInformation: AdditionalInformationEntity;
 
   /** Foreign Keys **/
   @ManyToOne(() => CatalogueEntity, { nullable: true })

@@ -29,6 +29,8 @@ export class CataloguesSeeder {
     await this.createMaritalStatusCatalogues();
     await this.createYesNoCatalogues();
     await this.createYesNoNACatalogues();
+    await this.createSexCatalogues();
+    await this.createNationalityCatalogues();
   }
 
   private async createBloodTypeCatalogues(): Promise<void> {
@@ -185,7 +187,7 @@ export class CataloguesSeeder {
     const catalogues: CreateCatalogueDto[] = [];
     catalogues.push(
       {
-        code: '1',
+        code: 'm',
         description: 'genero',
         name: 'Masculino',
         sort: 1,
@@ -193,7 +195,7 @@ export class CataloguesSeeder {
         type: CatalogueTypeEnum.GENDER,
       },
       {
-        code: '2',
+        code: 'f',
         description: 'tipo de identificacion',
         name: 'Femenino',
         sort: 2,
@@ -201,10 +203,18 @@ export class CataloguesSeeder {
         type: CatalogueTypeEnum.GENDER,
       },
       {
-        code: '3',
+        code: 'lgbti',
         description: '',
         name: 'LGBTI',
         sort: 3,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.GENDER,
+      },
+      {
+        code: 'other',
+        description: '',
+        name: 'Otro',
+        sort: 4,
         state: CatalogueStateEnum.ENABLED,
         type: CatalogueTypeEnum.GENDER,
       },
@@ -343,6 +353,176 @@ export class CataloguesSeeder {
         sort: 1,
         state: CatalogueStateEnum.ENABLED,
         type: CatalogueTypeEnum.YES_NO_NA,
+      },
+    );
+
+    for (const catalogue of catalogues) {
+      await this.catalogueService.create(catalogue);
+    }
+  }
+
+  private async createNationalityCatalogues() {
+    const catalogues: CreateCatalogueDto[] = [];
+    catalogues.push(
+      {
+        code: 'ecu',
+        description: 'Ecuatoriana',
+        name: 'Ecuatoriana',
+        sort: 1,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'col',
+        description: 'Colombiana',
+        name: 'Colombiana',
+        sort: 2,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'per',
+        description: 'Peruana',
+        name: 'Peruana',
+        sort: 3,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'ven',
+        description: 'Venezolana',
+        name: 'Venezolana',
+        sort: 4,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'chl',
+        description: 'Chilena',
+        name: 'Chilena',
+        sort: 5,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'arg',
+        description: 'Argentina',
+        name: 'Argentina',
+        sort: 6,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'bra',
+        description: 'Brasileña',
+        name: 'Brasileña',
+        sort: 7,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'ury',
+        description: 'Uruguaya',
+        name: 'Uruguaya',
+        sort: 8,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'pry',
+        description: 'Paraguaya',
+        name: 'Paraguaya',
+        sort: 9,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'bol',
+        description: 'Boliviana',
+        name: 'Boliviana',
+        sort: 10,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'cri',
+        description: 'Costarricense',
+        name: 'Costarricense',
+        sort: 11,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'cun',
+        description: 'Cubana',
+        name: 'Cubana',
+        sort: 12,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'slv',
+        description: 'Salvadoreña',
+        name: 'Salvadoreña',
+        sort: 13,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'gtm',
+        description: 'Guatemalteca',
+        name: 'Guatemalteca',
+        sort: 14,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'mex',
+        description: 'Mexicana',
+        name: 'Mexicana',
+        sort: 15,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'hti',
+        description: 'Haitiana',
+        name: 'Haitiana',
+        sort: 16,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'nic',
+        description: 'Nicaraguense',
+        name: 'Nicaraguense',
+        sort: 17,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'usa',
+        description: 'Estado Unidense',
+        name: 'Estado Unidense',
+        sort: 18,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'can',
+        description: 'Canadiense',
+        name: 'Canadiense',
+        sort: 19,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
+      },
+      {
+        code: 'other',
+        description: 'Otra',
+        name: 'Otra',
+        sort: 20,
+        state: CatalogueStateEnum.ENABLED,
+        type: CatalogueTypeEnum.NATIONALITY,
       },
     );
 

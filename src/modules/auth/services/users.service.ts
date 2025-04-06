@@ -13,12 +13,18 @@ import { PaginationDto } from '@shared/dto';
 import { ServiceResponseHttpModel } from '@shared/interfaces';
 import { AuthRepositoryEnum } from '@shared/enums';
 import { RoleEnum } from '@auth/enums';
+import { AddressEntity } from '@auth/entities/address.entity';
+import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject(AuthRepositoryEnum.USER_REPOSITORY)
     private repository: Repository<UserEntity>,
+    @Inject(AuthRepositoryEnum.ADDRESS_REPOSITORY)
+    private addressRepository: Repository<AddressEntity>,
+    @Inject(AuthRepositoryEnum.ADDITIONAL_INFORMATION_REPOSITORY)
+    private additionalInformationRepository: Repository<AdditionalInformationEntity>,
   ) {}
 
   async create(payload: CreateUserDto): Promise<UserEntity> {
@@ -73,6 +79,36 @@ export class UsersService {
 
     if (!user) {
       throw new NotFoundException('Usuario no encontrado (find one)');
+    }
+
+    return user;
+  }
+
+  async findPersonalInformation(id: string): Promise<UserEntity> {
+    const user = await this.repository.findOne({
+      where: { id },
+      select: {
+        id: true,
+        identification: true,
+        birthdate: true,
+        name: true,
+        lastname: true,
+        cellPhone: true,
+        email: true,
+      },
+      relations: {
+        identificationType: true,
+        gender: true,
+        address: { province: true, canton: true, parish: true },
+        additionalInformation: true,
+        nationality: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        'Usuario no encontrado (find persona information)',
+      );
     }
 
     return user;
@@ -205,5 +241,66 @@ export class UsersService {
     const userUpdated = await this.repository.save(user);
 
     return plainToInstance(ReadUserDto, userUpdated);
+  }
+
+  async updatePersonalInformation(
+    id: string,
+    payload: any,
+  ): Promise<UserEntity> {
+    const user = await this.repository.findOne({
+      where: { id },
+      relations: { address: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado para actualizar');
+    }
+
+    let address = user.address;
+
+    if (!address) {
+      address = this.addressRepository.create();
+      address.userId = id;
+    }
+
+    address.neighborhood = payload.address.neighborhood;
+    address.mainStreet = payload.address.mainStreet;
+    address.secondaryStreet = payload.address.secondaryStreet;
+
+    console.log(address);
+    await this.addressRepository.save(address);
+
+    return user;
+  }
+
+  async updateBankDetail(
+    id: string,
+    payload: any,
+  ): Promise<UserEntity> {
+    const user = await this.repository.findOne({
+      where: { id },
+      relations: { additionalInformation: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado para actualizar');
+    }
+
+    let additionalInformation = user.additionalInformation;
+
+    if (!additionalInformation) {
+      additionalInformation = this.additionalInformationRepository.create();
+      additionalInformation.userId = id;
+    }
+
+    additionalInformation.accountChanged = true;
+    additionalInformation.accountName = payload.additionalInformation.accountName;
+    // additionalInformation.accountTypeId = payload.additionalInformation.accountType.id;
+    additionalInformation.accountNumber = payload.additionalInformation.accountNumber;
+
+    console.log(additionalInformation);
+    await this.additionalInformationRepository.save(additionalInformation);
+
+    return user;
   }
 }
