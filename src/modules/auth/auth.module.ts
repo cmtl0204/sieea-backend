@@ -22,10 +22,12 @@ import { JwtStrategy } from '@auth/strategies';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from '@auth/guards';
 import { MailModule } from '@modules/common/mail/mail.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Global()
 @Module({
   imports: [
+    HttpModule,
     DatabaseModule,
     MailModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),

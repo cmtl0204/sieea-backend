@@ -5,6 +5,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
 import * as Bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
@@ -32,7 +33,7 @@ import { ConfigType } from '@nestjs/config';
 import { MailDataInterface } from '@modules/common/mail/interfaces/mail-data.interface';
 import { UsersService } from './users.service';
 import axios from 'axios';
-import { catchError } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -47,6 +48,7 @@ export class AuthService {
     private readonly userService: UsersService,
     private jwtService: JwtService,
     private readonly nodemailerService: MailService,
+    private readonly httpService: HttpService,
   ) {}
 
   async changePassword(
@@ -417,5 +419,14 @@ export class AuthService {
       success: response.data.success,
       score: response.data.score,
     };
+  }
+
+  async verifyIdentification(identification: string) {
+    const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/${identification}}`;
+    const { data } = await firstValueFrom(this.httpService.get(url));
+
+    console.log(data);
+
+    return data;
   }
 }

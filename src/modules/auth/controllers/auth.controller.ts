@@ -228,4 +228,19 @@ export class AuthController {
       title: '',
     };
   }
+
+  @PublicRoute()
+  @Post('verify-identification/:identification')
+  @HttpCode(HttpStatus.OK)
+  async verifyIdentification(
+    @Param('identification') identification: string,
+  ): Promise<ResponseHttpModel> {
+    const response = await this.authService.verifyIdentification(identification);
+
+    return {
+      data: response,
+      message: ``,
+      title: '',
+    };
+  }
 }

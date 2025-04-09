@@ -12,7 +12,7 @@ import {
 
 @Entity('dpa', { schema: 'common' })
 export class DpaEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @CreateDateColumn({
