@@ -235,7 +235,8 @@ export class AuthController {
   async verifyIdentification(
     @Param('identification') identification: string,
   ): Promise<ResponseHttpModel> {
-    const response = await this.authService.verifyIdentification(identification);
+    const response =
+      await this.authService.verifyIdentification(identification);
 
     return {
       data: response,

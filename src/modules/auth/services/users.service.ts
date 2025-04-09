@@ -273,10 +273,7 @@ export class UsersService {
     return user;
   }
 
-  async updateBankDetail(
-    id: string,
-    payload: any,
-  ): Promise<UserEntity> {
+  async updateBankDetail(id: string, payload: any): Promise<UserEntity> {
     const user = await this.repository.findOne({
       where: { id },
       relations: { additionalInformation: true },
@@ -294,9 +291,11 @@ export class UsersService {
     }
 
     additionalInformation.accountChanged = true;
-    additionalInformation.accountName = payload.additionalInformation.accountName;
+    additionalInformation.accountName =
+      payload.additionalInformation.accountName;
     // additionalInformation.accountTypeId = payload.additionalInformation.accountType.id;
-    additionalInformation.accountNumber = payload.additionalInformation.accountNumber;
+    additionalInformation.accountNumber =
+      payload.additionalInformation.accountNumber;
 
     console.log(additionalInformation);
     await this.additionalInformationRepository.save(additionalInformation);

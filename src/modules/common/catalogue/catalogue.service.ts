@@ -8,7 +8,8 @@ import {
 import { CatalogueEntity } from '@modules/common/catalogue/catalogue.entity';
 import {
   CacheEnum,
-  CatalogueTypeEnum, CommonRepositoryEnum,
+  CatalogueTypeEnum,
+  CommonRepositoryEnum,
   CoreRepositoryEnum,
 } from '@shared/enums';
 import { ReadUserDto } from '@auth/dto';
