@@ -57,34 +57,34 @@ export class AddressEntity {
   @JoinColumn({ name: 'province_id' })
   province: DpaEntity;
   @Column({
-    type: 'uuid',
+    type: 'bigint',
     name: 'province_id',
     nullable: true,
     comment: 'Provincia',
   })
-  provinceId: string;
+  provinceId: number;
 
   @ManyToOne(() => DpaEntity, { nullable: true })
   @JoinColumn({ name: 'canton_id' })
   canton: DpaEntity;
   @Column({
-    type: 'uuid',
+    type: 'bigint',
     name: 'canton_id',
     nullable: true,
     comment: 'Canton',
   })
-  cantonId: string;
+  cantonId: number;
 
   @ManyToOne(() => DpaEntity, { nullable: true })
   @JoinColumn({ name: 'parish_id' })
   parish: DpaEntity;
   @Column({
-    type: 'uuid',
+    type: 'bigint',
     name: 'parish_id',
     nullable: true,
     comment: 'Parroquia',
   })
-  parishId: string;
+  parishId: number;
 
   @Column({
     name: 'neighborhood',
