@@ -422,11 +422,26 @@ export class AuthService {
   }
 
   async verifyIdentification(identification: string) {
-    const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/${identification}}`;
-    const { data } = await firstValueFrom(this.httpService.get(url));
+    const user = await this.repository.findOneBy({ username: identification });
 
-    console.log(data);
+    if (!user) {
+      throw new NotFoundException({
+        message:
+          'Su número de cédula no se encuentra registrado en nuestro sistema',
+        error: 'Cédula no encontrado',
+      });
+    }
 
-    return data;
+    const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${identification}`;
+    console.log(url);
+    const { data } = await firstValueFrom(
+      this.httpService.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    );
+
+    return data.data;
   }
 }

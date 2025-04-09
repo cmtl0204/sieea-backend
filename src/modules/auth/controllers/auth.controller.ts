@@ -230,7 +230,7 @@ export class AuthController {
   }
 
   @PublicRoute()
-  @Post('verify-identification/:identification')
+  @Get('verify-identification/:identification')
   @HttpCode(HttpStatus.OK)
   async verifyIdentification(
     @Param('identification') identification: string,
