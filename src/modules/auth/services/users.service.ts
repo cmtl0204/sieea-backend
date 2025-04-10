@@ -45,7 +45,7 @@ export class UsersService {
   }
 
   async findAll(params?: FilterUserDto): Promise<ServiceResponseHttpModel> {
-    const relations = { roles: true, careers: true };
+    const relations = { roles: true };
     //Pagination & Filter by Search
     if (params && params?.limit > 0 && params?.page >= 0) {
       return await this.paginateAndFilter(params, relations);
@@ -89,19 +89,29 @@ export class UsersService {
       where: { id },
       select: {
         id: true,
-        identification: true,
-        birthdate: true,
-        name: true,
-        lastname: true,
-        cellPhone: true,
-        email: true,
       },
       relations: {
-        identificationType: true,
-        gender: true,
-        address: { province: true, canton: true, parish: true },
         additionalInformation: true,
-        nationality: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException(
+        'Usuario no encontrado (find persona information)',
+      );
+    }
+
+    return user;
+  }
+
+  async findBankDetail(id: string): Promise<UserEntity> {
+    const user = await this.repository.findOne({
+      where: { id },
+      select: {
+        id: true,
+      },
+      relations: {
+        additionalInformation: true,
       },
     });
 
@@ -249,26 +259,25 @@ export class UsersService {
   ): Promise<UserEntity> {
     const user = await this.repository.findOne({
       where: { id },
-      relations: { address: true },
+      relations: { additionalInformation: true },
     });
 
     if (!user) {
       throw new NotFoundException('Usuario no encontrado para actualizar');
     }
 
-    let address = user.address;
+    let additionalInformation = user.additionalInformation;
 
-    if (!address) {
-      address = this.addressRepository.create();
-      address.userId = id;
+    if (!additionalInformation) {
+      additionalInformation = this.additionalInformationRepository.create();
+      additionalInformation.userId = id;
     }
 
-    address.neighborhood = payload.address.neighborhood;
-    address.mainStreet = payload.address.mainStreet;
-    address.secondaryStreet = payload.address.secondaryStreet;
+    user.email = payload.additionalInformation.correo;
+    additionalInformation.correo = payload.additionalInformation.correo;
 
-    console.log(address);
-    await this.addressRepository.save(address);
+    await this.repository.save(user);
+    await this.additionalInformationRepository.save(additionalInformation);
 
     return user;
   }
@@ -290,14 +299,42 @@ export class UsersService {
       additionalInformation.userId = id;
     }
 
-    additionalInformation.accountChanged = true;
-    additionalInformation.accountName =
-      payload.additionalInformation.accountName;
-    // additionalInformation.accountTypeId = payload.additionalInformation.accountType.id;
-    additionalInformation.accountNumber =
-      payload.additionalInformation.accountNumber;
+    additionalInformation.cambioCuenta = true;
+    additionalInformation.numeroCuenta =
+      payload.additionalInformation.numeroCuenta;
+    additionalInformation.nombreCorto =
+      payload.additionalInformation.nombreCorto;
+    additionalInformation.tipoCuenta = payload.additionalInformation.tipoCuenta;
 
-    console.log(additionalInformation);
+    await this.additionalInformationRepository.save(additionalInformation);
+
+    return user;
+  }
+
+  async updateEmail(
+    id: string,
+    payload: any,
+  ): Promise<UserEntity> {
+    const user = await this.repository.findOne({
+      where: { id },
+      relations: { additionalInformation: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado para actualizar');
+    }
+
+    let additionalInformation = user.additionalInformation;
+
+    if (!additionalInformation) {
+      additionalInformation = this.additionalInformationRepository.create();
+      additionalInformation.userId = id;
+    }
+
+    user.email = payload.email;
+    additionalInformation.correo = payload.email;
+
+    await this.repository.save(user);
     await this.additionalInformationRepository.save(additionalInformation);
 
     return user;

@@ -112,13 +112,19 @@ export class MailService {
       attachments: mailAttachments,
     };
 
-    return await this.mailerService.sendMail(sendMailOptions).then(
-      (response) => {
-        return { accepted: response.accepted, rejected: response.rejected };
-      },
-      catchError((error) => {
-        return error;
-      }),
-    );
+    try {
+      const response = await this.mailerService.sendMail(sendMailOptions);
+
+      return {
+        accepted: response.accepted,
+        rejected: response.rejected,
+      };
+    } catch (error) {
+      console.error('Error al enviar el correo:', error);
+      return {
+        error: true,
+        message: error.message || 'No se pudo enviar el correo',
+      };
+    }
   }
 }

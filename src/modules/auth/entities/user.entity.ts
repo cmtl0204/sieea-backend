@@ -202,6 +202,7 @@ export class UserEntity {
   @Column({
     name: 'lastname',
     type: 'varchar',
+    nullable: true,
     comment: 'Apellidos',
   })
   lastname: string;
@@ -268,6 +269,14 @@ export class UserEntity {
     comment: 'Nombre de usuario para ingreso al sistema',
   })
   username: string;
+
+  @Column({
+    name: 'terms_conditions',
+    type: 'boolean',
+    default: false,
+    comment: 'Terminos y condiciones',
+  })
+  termsConditions: boolean;
 
   /** Before Actions **/
   @BeforeInsert()

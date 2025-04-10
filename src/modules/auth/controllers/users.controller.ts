@@ -55,7 +55,8 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Find All' })
-  @Auth(RoleEnum.ADMIN)
+  // @Auth(RoleEnum.ADMIN)
+  @PublicRoute()
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAll(@Query() params: FilterUserDto): Promise<ResponseHttpModel> {
@@ -180,6 +181,22 @@ export class UsersController {
     };
   }
 
+  @ApiOperation({ summary: 'Find Bank Detail' })
+  @Auth()
+  @Get(':id/bank-detail')
+  @HttpCode(HttpStatus.OK)
+  async findBankDetail(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse = await this.usersService.findBankDetail(id);
+
+    return {
+      data: serviceResponse,
+      message: `show ${id}`,
+      title: `Success`,
+    };
+  }
+
   @ApiOperation({ summary: 'Update Personal Information' })
   @Auth()
   @Put(':id/personal-information')
@@ -209,6 +226,26 @@ export class UsersController {
     @Body() payload: any,
   ): Promise<ResponseHttpModel> {
     const serviceResponse = await this.usersService.updateBankDetail(
+      id,
+      payload,
+    );
+
+    return {
+      data: serviceResponse,
+      message: `Información Actualizada Correctamente`,
+      title: `Actualizado`,
+    };
+  }
+
+  @ApiOperation({ summary: 'Update Bank Detail' })
+  @Auth()
+  @Patch(':id/email')
+  @HttpCode(HttpStatus.CREATED)
+  async updateEmail(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() payload: any,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse = await this.usersService.updateEmail(
       id,
       payload,
     );

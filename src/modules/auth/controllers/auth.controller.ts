@@ -162,6 +162,22 @@ export class AuthController {
   }
 
   @PublicRoute()
+  @Get('transactional-email-codes/:email/request')
+  @HttpCode(HttpStatus.OK)
+  async requestTransactionalCodeEmail(
+    @Param('email') email: string,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse =
+      await this.authService.requestTransactionalEmailCode(email);
+
+    return {
+      data: serviceResponse.data,
+      message: `Su código fue enviado a ${email}`,
+      title: 'Código Enviado',
+    };
+  }
+
+  @PublicRoute()
   @Patch('transactional-codes/:token/verify')
   @HttpCode(HttpStatus.OK)
   async verifyTransactionalCode(
@@ -172,7 +188,7 @@ export class AuthController {
 
     return {
       data: null,
-      message: `Por favor ingrese su nueva contraseña`,
+      message: `Proceda con su trámite`,
       title: 'Código Válido',
     };
   }
@@ -239,9 +255,79 @@ export class AuthController {
       await this.authService.verifyIdentification(identification);
 
     return {
-      data: response,
-      message: ``,
-      title: '',
+      data: response.data,
+      message: `Ingrese la validación correspondiente`,
+      title: 'Documento válido',
+    };
+  }
+
+  @PublicRoute()
+  @Get('sign-in-validation-identification/:identification')
+  @HttpCode(HttpStatus.OK)
+  async signInByValidationIdentification(
+    @Param('identification') identification: string,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse =
+      await this.authService.signInByValidationIdentification(identification);
+
+    return {
+      data: serviceResponse.data,
+      message: `Ingreso Correcto`,
+      title: 'Bienvenido',
+    };
+  }
+
+  @PublicRoute()
+  @Get('migration-eea')
+  @HttpCode(HttpStatus.OK)
+  async migrateEEA() {
+    const serviceResponse = await this.authService.migrateEEA();
+
+    return {
+      data: serviceResponse.data,
+      message: `Ingreso Correcto`,
+      title: 'Bienvenido',
+    };
+  }
+
+  @PublicRoute()
+  @Get('consulta-registro-civil')
+  @HttpCode(HttpStatus.OK)
+  async consultaRegistroCivil() {
+    const serviceResponse = await this.authService.consultaRegistroCivil();
+
+    return {
+      data: serviceResponse.data,
+      message: `Cedulas actualizadas`,
+      title: 'Correcto',
+    };
+  }
+
+  @Patch('terms-conditions/accept')
+  @HttpCode(HttpStatus.OK)
+  async acceptTermsConditions(
+    @User() user: UserEntity,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse = await this.authService.acceptTermsConditions(user);
+
+    return {
+      data: serviceResponse,
+      message: `Usted ha aceptado`,
+      title: 'Términos y Condiciones',
+    };
+  }
+
+  @Patch('terms-conditions/reject')
+  @HttpCode(HttpStatus.OK)
+  async rejectTermsConditions(
+    @User() user: UserEntity,
+  ): Promise<ResponseHttpModel> {
+    const serviceResponse = await this.authService.rejectTermsConditions(user);
+
+    return {
+      data: serviceResponse,
+      message: `Ingreso Correcto`,
+      title: 'Bienvenido',
     };
   }
 }

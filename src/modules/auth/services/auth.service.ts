@@ -34,6 +34,7 @@ import { MailDataInterface } from '@modules/common/mail/interfaces/mail-data.int
 import { UsersService } from './users.service';
 import axios from 'axios';
 import { firstValueFrom } from 'rxjs';
+import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 
 @Injectable()
 export class AuthService {
@@ -44,6 +45,8 @@ export class AuthService {
     private repository: Repository<UserEntity>,
     @Inject(AuthRepositoryEnum.TRANSACTIONAL_CODE_REPOSITORY)
     private transactionalCodeRepository: Repository<TransactionalCodeEntity>,
+    @Inject(AuthRepositoryEnum.ADDITIONAL_INFORMATION_REPOSITORY)
+    private readonly repositoryAdditionalInformation: Repository<AdditionalInformationEntity>,
     @Inject(config.KEY) private configService: ConfigType<typeof config>,
     private readonly userService: UsersService,
     private jwtService: JwtService,
@@ -283,6 +286,45 @@ export class AuthService {
     return { data: email };
   }
 
+  async requestTransactionalEmailCode(
+    email: string,
+  ): Promise<ServiceResponseHttpModel> {
+    const randomNumber = Math.random();
+    const token = randomNumber.toString().substring(2, 8);
+
+    const mailData: MailDataInterface = {
+      to: email,
+      subject: MailSubjectEnum.RESET_PASSWORD,
+      template: MailTemplateEnum.TRANSACTIONAL_CODE,
+      data: {
+        token,
+      },
+    };
+
+    await this.nodemailerService.sendMail(mailData);
+
+    const payload = { username: email, token, type: 'email_reset' };
+
+    await this.transactionalCodeRepository.save(payload);
+
+    const value = email;
+    const chars = 3; // Cantidad de caracters visibles
+
+    const emailMask = value.replace(
+      /[a-z0-9\-_.]+@/gi,
+      (c) =>
+        c.substr(0, chars) +
+        c
+          .split('')
+          .slice(chars, -1)
+          .map((v) => '*')
+          .join('') +
+        '@',
+    );
+
+    return { data: emailMask };
+  }
+
   async verifyTransactionalCode(
     token: string,
     username: string,
@@ -421,7 +463,7 @@ export class AuthService {
     };
   }
 
-  async verifyIdentification(identification: string) {
+  async verifyIdentification2(identification: string) {
     const user = await this.repository.findOneBy({ username: identification });
 
     if (!user) {
@@ -433,7 +475,7 @@ export class AuthService {
     }
 
     const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${identification}`;
-    console.log(url);
+
     const { data } = await firstValueFrom(
       this.httpService.get(url, {
         headers: {
@@ -442,6 +484,142 @@ export class AuthService {
       }),
     );
 
-    return data.data;
+    return data;
+  }
+
+  async verifyIdentification(identification: string) {
+    const additionalInformation =
+      await this.repositoryAdditionalInformation.findOne({
+        where: { cedula: identification },
+        select: {
+          cedula: true,
+          fechaEmision: true,
+          fechaExpiracion: true,
+          nombres: true,
+        },
+      });
+
+    if (!additionalInformation) {
+      throw new NotFoundException({
+        message:
+          'Su número de cédula no se encuentra registrado en nuestro sistema',
+        error: 'Cédula no encontrado',
+      });
+    }
+
+    return { data: additionalInformation };
+  }
+
+  async signInByValidationIdentification(username: string) {
+    const user: UserEntity | null = await this.repository.findOne({
+      select: {
+        id: true,
+        identification: true,
+        lastname: true,
+        name: true,
+        suspendedAt: true,
+        username: true,
+        termsConditions: true,
+      },
+      where: {
+        username,
+      },
+      relations: {
+        roles: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException({
+        message:
+          'Su número de cédula no se encuentra registrado en nuestro sistema',
+        error: 'Cédula no encontrado',
+      });
+    }
+
+    if (user?.suspendedAt)
+      throw new UnauthorizedException({
+        error: 'Cuenta Suspendida',
+        message: 'Su usuario se encuentra suspendido',
+      });
+
+    const { suspendedAt, roles, ...userRest } = user;
+
+    await this.repository.update(user.id, { activatedAt: new Date() });
+
+    return {
+      data: {
+        accessToken: await this.generateJwt(user),
+        auth: userRest,
+        roles,
+      },
+    };
+  }
+
+  async migrateEEA() {
+    const additionalInformations =
+      await this.repositoryAdditionalInformation.find({ take: 10 });
+
+    for (const item of additionalInformations) {
+      let user = await this.repository.findOneBy({
+        identification: item.cedula,
+      });
+
+      if (!user) {
+        user = this.repository.create();
+
+        user.username = item.cedula;
+        user.identification = item.cedula;
+        user.email = item.correo;
+        user.name = item.nombres;
+        user.password = item.cedula;
+
+        const userCreated = await this.repository.save(user);
+
+        item.userId = userCreated.id;
+
+        await this.repositoryAdditionalInformation.save(item);
+      }
+    }
+
+    return { data: null };
+  }
+
+  async consultaRegistroCivil() {
+    const additionalInformations =
+      await this.repositoryAdditionalInformation.find({ take: 10 });
+
+    for (const item of additionalInformations) {
+      const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
+
+      const { data } = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }),
+      );
+
+      if (data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
+        console.log('1');
+        item.fechaEmision = data.data.fechaExpedicion;
+        item.fechaExpiracion = data.data.fechaExpiracion;
+        await this.repositoryAdditionalInformation.save(item);
+      }
+    }
+
+    return { data: null };
+  }
+
+  async acceptTermsConditions(user: UserEntity) {
+    user.termsConditions = true;
+
+    return await this.repository.save(user);
+  }
+
+  async rejectTermsConditions(user: UserEntity) {
+    user.termsConditions = false;
+
+    return await this.repository.save(user);
   }
 }
