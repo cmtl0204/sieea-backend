@@ -614,6 +614,17 @@ export class AuthService {
   async acceptTermsConditions(user: UserEntity) {
     user.termsConditions = true;
 
+    const mailData: MailDataInterface = {
+      to: user.email,
+      subject: MailSubjectEnum.ACCEPT_TERMS_CONDITIONS,
+      template: MailTemplateEnum.ACCEPT_TERMS_CONDITIONS,
+      data: {
+        user,
+      },
+    };
+
+    await this.nodemailerService.sendMail(mailData);
+
     return await this.repository.save(user);
   }
 
