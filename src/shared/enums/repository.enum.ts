@@ -17,6 +17,7 @@ export enum CommonRepositoryEnum {
 
 export enum CoreRepositoryEnum {
   PARTICIPANT_REPOSITORY = 'PARTICIPANT_REPOSITORY',
+  ACTIVITY_REPOSITORY = 'ACTIVITY_REPOSITORY',
 }
 
 export enum TeacherEvaluationRepositoryEnum {

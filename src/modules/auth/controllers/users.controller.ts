@@ -245,10 +245,7 @@ export class UsersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() payload: any,
   ): Promise<ResponseHttpModel> {
-    const serviceResponse = await this.usersService.updateEmail(
-      id,
-      payload,
-    );
+    const serviceResponse = await this.usersService.updateEmail(id, payload);
 
     return {
       data: serviceResponse,

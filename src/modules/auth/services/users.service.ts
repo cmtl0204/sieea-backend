@@ -311,10 +311,7 @@ export class UsersService {
     return user;
   }
 
-  async updateEmail(
-    id: string,
-    payload: any,
-  ): Promise<UserEntity> {
+  async updateEmail(id: string, payload: any): Promise<UserEntity> {
     const user = await this.repository.findOne({
       where: { id },
       relations: { additionalInformation: true },

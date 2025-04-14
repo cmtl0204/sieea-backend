@@ -21,6 +21,7 @@ import { RoleEntity } from '@auth/entities';
 import { CatalogueEntity } from '@modules/common/catalogue/catalogue.entity';
 import { AddressEntity } from '@auth/entities/address.entity';
 import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
+import { ActivityEntity } from '@modules/core/activity/activity.entity';
 
 @Entity('users', { schema: 'auth' })
 export class UserEntity {
@@ -60,6 +61,12 @@ export class UserEntity {
     (additionalInformation) => additionalInformation.user,
   )
   additionalInformation: AdditionalInformationEntity;
+
+  @OneToMany(
+    () => ActivityEntity,
+    (entity) => entity.user,
+  )
+  activities: ActivityEntity[];
 
   /** Foreign Keys **/
   @ManyToOne(() => CatalogueEntity, { nullable: true })
