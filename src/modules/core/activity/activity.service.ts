@@ -103,6 +103,7 @@ export class ActivityService {
   ): Promise<ActivityEntity[]> {
     return await this.repository.find({
       where: { additionalInformationId },
+      order: { sort: 'desc' },
     });
   }
 
@@ -112,14 +113,24 @@ export class ActivityService {
       code: payload.code,
     });
 
+    if (activity) {
+      activity.completed = true;
+      activity.registeredAt = new Date();
+
+      await this.repository.save(activity);
+    }
+
     if (!activity) {
       activity = this.repository.create();
       activity.additionalInformationId = additionalInformationId;
+      activity.code = payload.code;
       activity.category = payload.category;
       activity.description = payload.description;
       activity.label = payload.label;
       activity.name = payload.name;
       activity.sort = payload.sort;
+      activity.completed = true;
+      activity.registeredAt = new Date();
 
       await this.repository.save(activity);
     }

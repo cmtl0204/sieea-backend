@@ -615,7 +615,7 @@ export class AuthService {
         }),
       );
 
-      await new Promise((resolve) => setTimeout(resolve, 2200));
+      await new Promise((resolve) => setTimeout(resolve, 1500));
 
       if (data && data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
         item.fechaEmision = data.data.fechaExpedicion;

@@ -116,4 +116,11 @@ export class ActivityEntity {
     comment: 'Tipo de actividad',
   })
   category: string;
+
+  @Column({
+    name: 'registered_at',
+    type: 'timestamp',
+    comment: 'Tipo de actividad',
+  })
+  registeredAt: Date;
 }
