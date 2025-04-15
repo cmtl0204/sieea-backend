@@ -593,7 +593,7 @@ export class AuthService {
       const additionalInformations =
         await this.repositoryAdditionalInformation.find({
           where: { fechaEmision: IsNull() },
-          take: 200,
+          take: 500,
         });
 
       for (const item of additionalInformations) {
@@ -605,10 +605,10 @@ export class AuthService {
             headers: {
               'Content-Type': 'application/json',
             },
+            timeout: 1000,
           }),
         );
 
-        console.log(data)
         if (data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
           item.fechaEmision = data.data.fechaExpedicion;
           item.fechaExpiracion = data.data.fechaExpiracion;
