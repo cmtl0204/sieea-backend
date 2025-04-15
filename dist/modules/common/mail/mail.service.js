@@ -83,7 +83,7 @@ let MailService = class MailService {
         mailAttachments.push(footer);
         const sendMailOptions = {
             to: mailData.to,
-            from: `${this.configService.mail.fromName} - ${this.configService.mail.from}`,
+            from: `${this.configService.mail.fromName} ${this.configService.mail.from}`,
             subject: mailData.subject,
             template: mailData.template,
             context: { system: 'environments.appName', data: mailData.data },
