@@ -588,32 +588,40 @@ export class AuthService {
   }
 
   async consultaRegistroCivil() {
-    const additionalInformations =
-      await this.repositoryAdditionalInformation.find({
-        where: { fechaEmision: IsNull() },
-        take: 1000,
-      });
+    let cedulaError = '';
+    try {
+      const additionalInformations =
+        await this.repositoryAdditionalInformation.find({
+          where: { fechaEmision: IsNull() },
+          take: 1000,
+        });
 
-    for (const item of additionalInformations) {
-      const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
+      for (const item of additionalInformations) {
+        cedulaError = item.cedula;
+        const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
 
-      const { data } = await firstValueFrom(
-        this.httpService.get(url, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }),
-      );
+        const { data } = await firstValueFrom(
+          this.httpService.get(url, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }),
+        );
 
-      if (data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
-        console.log('1');
-        item.fechaEmision = data.data.fechaExpedicion;
-        item.fechaExpiracion = data.data.fechaExpiracion;
-        await this.repositoryAdditionalInformation.save(item);
+        if (data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
+          console.log('1');
+          item.fechaEmision = data.data.fechaExpedicion;
+          item.fechaExpiracion = data.data.fechaExpiracion;
+          await this.repositoryAdditionalInformation.save(item);
+        }
       }
-    }
 
-    return { data: null };
+      return { data: null };
+    } catch (error) {
+      console.error(cedulaError);
+      console.error(error);
+      return { data: null };
+    }
   }
 
   async acceptTermsConditions(user: UserEntity) {
