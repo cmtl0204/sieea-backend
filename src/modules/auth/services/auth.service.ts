@@ -9,7 +9,7 @@ import { HttpService } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
 import * as Bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { add, isBefore } from 'date-fns';
 import { UserEntity, TransactionalCodeEntity } from '@auth/entities';
 import { PayloadTokenModel } from '@auth/models';
@@ -589,7 +589,10 @@ export class AuthService {
 
   async consultaRegistroCivil() {
     const additionalInformations =
-      await this.repositoryAdditionalInformation.find({ take: 10 });
+      await this.repositoryAdditionalInformation.find({
+        where: { fechaEmision: IsNull() },
+        take: 1000,
+      });
 
     for (const item of additionalInformations) {
       const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
