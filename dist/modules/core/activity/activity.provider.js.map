@@ -1,0 +1,1 @@
+{"version":3,"file":"activity.provider.js","sourceRoot":"","sources":["../../../../src/modules/core/activity/activity.provider.ts"],"names":[],"mappings":";;;AACA,iDAA+D;AAC/D,uDAAmD;AAEtC,QAAA,gBAAgB,GAAG;IAC9B,OAAO,EAAE,0BAAkB,CAAC,mBAAmB;IAC/C,UAAU,EAAE,CAAC,UAAsB,EAAE,EAAE,CACrC,UAAU,CAAC,aAAa,CAAC,gCAAc,CAAC;IAC1C,MAAM,EAAE,CAAC,kBAAU,CAAC,cAAc,CAAC;CACpC,CAAC"}

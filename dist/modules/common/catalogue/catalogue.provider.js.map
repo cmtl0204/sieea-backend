@@ -1,0 +1,1 @@
+{"version":3,"file":"catalogue.provider.js","sourceRoot":"","sources":["../../../../src/modules/common/catalogue/catalogue.provider.ts"],"names":[],"mappings":";;;AACA,iDAAiE;AACjE,yDAAqD;AAExC,QAAA,iBAAiB,GAAG;IAC/B,OAAO,EAAE,4BAAoB,CAAC,oBAAoB;IAClD,UAAU,EAAE,CAAC,UAAsB,EAAE,EAAE,CACrC,UAAU,CAAC,aAAa,CAAC,kCAAe,CAAC;IAC3C,MAAM,EAAE,CAAC,kBAAU,CAAC,cAAc,CAAC;CACpC,CAAC"}

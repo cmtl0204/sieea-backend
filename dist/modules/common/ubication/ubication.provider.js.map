@@ -1,0 +1,1 @@
+{"version":3,"file":"ubication.provider.js","sourceRoot":"","sources":["../../../../src/modules/common/ubication/ubication.provider.ts"],"names":[],"mappings":";;;AACA,iDAAiE;AACjE,uDAAmD;AAEtC,QAAA,iBAAiB,GAAG;IAC/B,OAAO,EAAE,4BAAoB,CAAC,cAAc;IAC5C,UAAU,EAAE,CAAC,UAAsB,EAAE,EAAE,CACrC,UAAU,CAAC,aAAa,CAAC,gCAAc,CAAC;IAC1C,MAAM,EAAE,CAAC,kBAAU,CAAC,cAAc,CAAC;CACpC,CAAC"}
