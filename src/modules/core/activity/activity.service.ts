@@ -1,13 +1,18 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { FindOptionsWhere, ILike, Repository } from 'typeorm';
-import { CoreRepositoryEnum } from '@shared/enums';
+import { AuthRepositoryEnum, CoreRepositoryEnum } from '@shared/enums';
 import { ServiceResponseHttpModel } from '@shared/interfaces';
 import { UserEntity } from '@auth/entities';
 import { PaginationDto } from '@shared/dto';
 import { plainToInstance } from 'class-transformer';
 import { ReadUserDto } from '@auth/dto';
 import { ActivityEntity } from '@modules/core/activity/activity.entity';
-import { CreateActivityDto, FilterActivityDto, UpdateActivityDto } from '@modules/core/activity/dto';
+import {
+  CreateActivityDto,
+  FilterActivityDto,
+  UpdateActivityDto,
+} from '@modules/core/activity/dto';
+import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 
 @Injectable()
 export class ActivityService {
@@ -16,17 +21,11 @@ export class ActivityService {
   constructor(
     @Inject(CoreRepositoryEnum.ACTIVITY_REPOSITORY)
     private repository: Repository<ActivityEntity>,
+    @Inject(AuthRepositoryEnum.ADDITIONAL_INFORMATION_REPOSITORY)
+    private readonly additionalInformationRepository: Repository<AdditionalInformationEntity>,
   ) {}
 
-  async create(payload: CreateActivityDto): Promise<ActivityEntity> {
-    const newCatalogue = this.repository.create(payload);
-
-    return await this.repository.save(newCatalogue);
-  }
-
-  async findAll(
-    params?: FilterActivityDto,
-  ): Promise<ServiceResponseHttpModel> {
+  async findAll(params?: FilterActivityDto): Promise<ServiceResponseHttpModel> {
     //Pagination & Filter by search
     if (params && params?.limit > 0 && params?.page >= 0) {
       return await this.paginateAndFilter(params);
@@ -97,5 +96,34 @@ export class ActivityService {
       data: plainToInstance(ReadUserDto, response[0]),
       pagination: { limit, totalItems: response[1] },
     };
+  }
+
+  async findActivitiesByAdditionalInformation(
+    additionalInformationId: string,
+  ): Promise<ActivityEntity[]> {
+    return await this.repository.find({
+      where: { additionalInformationId },
+    });
+  }
+
+  async create(additionalInformationId: string, payload: any) {
+    let activity = await this.repository.findOneBy({
+      additionalInformationId,
+      code: payload.code,
+    });
+
+    if (!activity) {
+      activity = this.repository.create();
+      activity.additionalInformationId = additionalInformationId;
+      activity.category = payload.category;
+      activity.description = payload.description;
+      activity.label = payload.label;
+      activity.name = payload.name;
+      activity.sort = payload.sort;
+
+      await this.repository.save(activity);
+    }
+
+    return { data: null };
   }
 }

@@ -15,6 +15,7 @@ import { UserEntity, TransactionalCodeEntity } from '@auth/entities';
 import { PayloadTokenModel } from '@auth/models';
 import {
   AuthRepositoryEnum,
+  CoreRepositoryEnum,
   MailSubjectEnum,
   MailTemplateEnum,
 } from '@shared/enums';
@@ -35,6 +36,7 @@ import { UsersService } from './users.service';
 import axios from 'axios';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
+import { ActivityEntity } from '@modules/core/activity/activity.entity';
 
 @Injectable()
 export class AuthService {
@@ -546,7 +548,7 @@ export class AuthService {
         message: 'Su usuario se encuentra suspendido',
       });
 
-    const { suspendedAt, roles, ...userRest } = user;
+    const { suspendedAt, additionalInformation, roles, ...userRest } = user;
 
     await this.repository.update(user.id, { activatedAt: new Date() });
 
@@ -555,6 +557,7 @@ export class AuthService {
         accessToken: await this.generateJwt(user),
         auth: userRest,
         roles,
+        additionalInformation,
       },
     };
   }
@@ -612,7 +615,7 @@ export class AuthService {
         }),
       );
 
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 2200));
 
       if (data && data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
         item.fechaEmision = data.data.fechaExpedicion;

@@ -19,7 +19,6 @@ import {
   UpdateCatalogueDto,
 } from '@modules/common/catalogue/dto';
 import { Auth } from '@auth/decorators';
-import { FilterParticipantDto } from '@modules/core/participant/dto';
 import { ActivityService } from '@modules/core/activity/activity.service';
 
 @ApiTags('Activities')
@@ -28,33 +27,39 @@ import { ActivityService } from '@modules/core/activity/activity.service';
 export class ActivityController {
   constructor(private activityService: ActivityService) {}
 
+  @ApiOperation({ summary: 'List of activities' })
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async findActivitiesByAdditionalInformation(
+    @Query('additionalInformationId') additionalInformationId: string,
+  ): Promise<ResponseHttpModel> {
+    const response =
+      await this.activityService.findActivitiesByAdditionalInformation(
+        additionalInformationId,
+      );
+
+    return {
+      data: response,
+      message: `index`,
+      title: `index`,
+    };
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(
-    @Body() payload: CreateCatalogueDto,
+    @Query('additionalInformationId') additionalInformationId: string,
+    @Body() payload: any,
   ): Promise<ResponseHttpModel> {
-    const data = await this.activityService.create(payload);
+    const data = await this.activityService.create(
+      additionalInformationId,
+      payload,
+    );
 
     return {
       data,
       message: 'created',
       title: 'created',
-    };
-  }
-
-  @ApiOperation({ summary: 'List of catalogues' })
-  @Get()
-  @HttpCode(HttpStatus.OK)
-  async findAll(
-    @Query() params: FilterParticipantDto,
-  ): Promise<ResponseHttpModel> {
-    const response = await this.activityService.findAll(params);
-
-    return {
-      data: response.data,
-      pagination: response.pagination,
-      message: `index`,
-      title: `index`,
     };
   }
 

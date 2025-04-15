@@ -62,12 +62,6 @@ export class UserEntity {
   )
   additionalInformation: AdditionalInformationEntity;
 
-  @OneToMany(
-    () => ActivityEntity,
-    (entity) => entity.user,
-  )
-  activities: ActivityEntity[];
-
   /** Foreign Keys **/
   @ManyToOne(() => CatalogueEntity, { nullable: true })
   @JoinColumn({ name: 'blood_type_id' })

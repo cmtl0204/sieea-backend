@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '@auth/entities';
+import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 
 @Entity('activities', { schema: 'core' })
 export class ActivityEntity {
@@ -51,23 +52,24 @@ export class ActivityEntity {
   /** Inverse Relationship **/
 
   /** Foreign Keys **/
-  @ManyToOne(() => UserEntity, (entity) => entity.activities, {
+  @ManyToOne(() => AdditionalInformationEntity, (entity) => entity.activities, {
     nullable: true,
   })
-  @JoinColumn({ name: 'user_id' })
-  user: UserEntity;
+  @JoinColumn({ name: 'additional_information_id' })
+  additionalInformation: AdditionalInformationEntity;
   @Column({
     type: 'uuid',
-    name: 'user_id',
+    name: 'additional_information_id',
     nullable: true,
     comment: '',
   })
-  userId: string;
+  additionalInformationId: string;
 
   /** Columns **/
   @Column({
     name: 'code',
     type: 'varchar',
+    nullable:true,
     comment: 'Codigo de la actividad',
   })
   code: string;
@@ -80,6 +82,13 @@ export class ActivityEntity {
   description: string;
 
   @Column({
+    name: 'label',
+    type: 'varchar',
+    comment: 'Label de la actividad',
+  })
+  label: string;
+
+  @Column({
     name: 'name',
     type: 'varchar',
     comment: 'Nombre de la actividad',
@@ -89,7 +98,7 @@ export class ActivityEntity {
   @Column({
     name: 'completed',
     type: 'boolean',
-    default: true,
+    default: false,
     comment: 'Si ya completo',
   })
   completed: boolean;

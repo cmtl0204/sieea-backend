@@ -7,11 +7,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '@auth/entities/user.entity';
 import { CatalogueEntity } from '@modules/common/catalogue/catalogue.entity';
+import { ActivityEntity } from '@modules/core/activity/activity.entity';
 
 @Entity('additional_information', { schema: 'auth' })
 export class AdditionalInformationEntity {
@@ -43,6 +45,8 @@ export class AdditionalInformationEntity {
   deletedAt: Date;
 
   /** Inverse Relationship **/
+  @OneToMany(() => ActivityEntity, (entity) => entity.additionalInformation)
+  activities: ActivityEntity[];
 
   /** Foreign Keys **/
   @ManyToOne(() => UserEntity)

@@ -10,6 +10,7 @@ import { config } from '@config';
 import { AuthModule } from '@modules/auth/auth.module';
 // import { CoreModule } from '@modules/core/core.module';
 import { CommonModule } from '@modules/common/common.module';
+import { CoreModule } from '@modules/core/core.module';
 // import { ReportsModule } from '@modules/reports/report.module';
 // import { ImportsModule } from '@modules/imports/import.module';
 
@@ -40,7 +41,7 @@ import { CommonModule } from '@modules/common/common.module';
     HttpModule,
     AuthModule,
     CommonModule,
-    // CoreModule,
+    CoreModule,
     // ReportsModule,
     // ImportsModule,
   ],
