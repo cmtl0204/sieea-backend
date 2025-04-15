@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -369,4 +371,21 @@ export class AdditionalInformationEntity {
     comment: 'estado_opi',
   })
   fechaExpiracion: string;
+
+  @Column({
+    name: 'codigo_actividad',
+    type: 'varchar',
+    nullable: true,
+    comment: 'codigo',
+  })
+  codigoActividad: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  setCorreo() {
+    if (!this.correo) {
+      return;
+    }
+    this.correo = this.correo.toLowerCase().trim();
+  }
 }

@@ -600,7 +600,7 @@ export class AuthService {
         cedulaError = item.cedula;
         const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
 
-        const { data } = await lastValueFrom(
+        const { data } = await firstValueFrom(
           this.httpService.get(url, {
             headers: {
               'Content-Type': 'application/json',
