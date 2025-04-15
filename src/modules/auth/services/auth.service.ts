@@ -605,9 +605,10 @@ export class AuthService {
             headers: {
               'Content-Type': 'application/json',
             },
-            timeout: 1000,
           }),
         );
+
+        await (new Promise(resolve => setTimeout(resolve, 1000)));
 
         if (data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
           item.fechaEmision = data.data.fechaExpedicion;
