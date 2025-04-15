@@ -33,7 +33,7 @@ import { ConfigType } from '@nestjs/config';
 import { MailDataInterface } from '@modules/common/mail/interfaces/mail-data.interface';
 import { UsersService } from './users.service';
 import axios from 'axios';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 
 @Injectable()
@@ -593,14 +593,14 @@ export class AuthService {
       const additionalInformations =
         await this.repositoryAdditionalInformation.find({
           where: { fechaEmision: IsNull() },
-          take: 1000,
+          take: 200,
         });
 
       for (const item of additionalInformations) {
         cedulaError = item.cedula;
         const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
 
-        const { data } = await firstValueFrom(
+        const { data } = await lastValueFrom(
           this.httpService.get(url, {
             headers: {
               'Content-Type': 'application/json',
@@ -608,6 +608,7 @@ export class AuthService {
           }),
         );
 
+        console.log(data)
         if (data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
           item.fechaEmision = data.data.fechaExpedicion;
           item.fechaExpiracion = data.data.fechaExpiracion;
