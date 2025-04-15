@@ -528,6 +528,7 @@ export class AuthService {
       },
       relations: {
         roles: true,
+        additionalInformation: true,
       },
     });
 
@@ -589,40 +590,38 @@ export class AuthService {
 
   async consultaRegistroCivil() {
     let cedulaError = '';
-    try {
-      const additionalInformations =
-        await this.repositoryAdditionalInformation.find({
-          where: { fechaEmision: IsNull() },
-          take: 500,
-        });
 
-      for (const item of additionalInformations) {
-        cedulaError = item.cedula;
-        const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
+    const additionalInformations =
+      await this.repositoryAdditionalInformation.find({
+        where: { fechaEmision: IsNull() },
+        take: 500,
+      });
 
-        const { data } = await firstValueFrom(
-          this.httpService.get(url, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }),
-        );
+    let i = 0;
+    for (const item of additionalInformations) {
+      console.log(i++);
 
-        await (new Promise(resolve => setTimeout(resolve, 1000)));
+      cedulaError = item.cedula;
+      const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
 
-        if (data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
-          item.fechaEmision = data.data.fechaExpedicion;
-          item.fechaExpiracion = data.data.fechaExpiracion;
-          await this.repositoryAdditionalInformation.save(item);
-        }
+      const { data } = await firstValueFrom(
+        this.httpService.get(url, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }),
+      );
+
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      if (data && data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
+        item.fechaEmision = data.data.fechaExpedicion;
+        item.fechaExpiracion = data.data.fechaExpiracion;
+        await this.repositoryAdditionalInformation.save(item);
       }
-
-      return { data: null };
-    } catch (error) {
-      console.error(error);
-      console.error(cedulaError);
-      return { data: null };
     }
+
+    return { data: null };
   }
 
   async acceptTermsConditions(user: UserEntity) {
