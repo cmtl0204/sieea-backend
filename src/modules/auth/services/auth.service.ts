@@ -609,7 +609,6 @@ export class AuthService {
         );
 
         if (data.data && (!item.fechaExpiracion || !item.fechaEmision)) {
-          console.log('1');
           item.fechaEmision = data.data.fechaExpedicion;
           item.fechaExpiracion = data.data.fechaExpiracion;
           await this.repositoryAdditionalInformation.save(item);
@@ -618,8 +617,8 @@ export class AuthService {
 
       return { data: null };
     } catch (error) {
-      console.error(cedulaError);
       console.error(error);
+      console.error(cedulaError);
       return { data: null };
     }
   }
