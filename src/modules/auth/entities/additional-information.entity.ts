@@ -384,6 +384,14 @@ export class AdditionalInformationEntity {
   })
   codigoActividad: string;
 
+  @Column({
+    name: 'fecha_actualizacion_correo',
+    type: 'timestamp',
+    nullable: true,
+    comment: 'ultima fecha de actualizacion del correo',
+  })
+  fechaActualizacionCorreo: Date;
+
   @BeforeInsert()
   @BeforeUpdate()
   setCorreo() {

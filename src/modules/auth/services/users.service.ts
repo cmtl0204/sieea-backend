@@ -330,6 +330,7 @@ export class UsersService {
 
     user.email = payload.email;
     additionalInformation.correo = payload.email;
+    additionalInformation.fechaActualizacionCorreo = new Date();
 
     await this.repository.save(user);
     await this.additionalInformationRepository.save(additionalInformation);
