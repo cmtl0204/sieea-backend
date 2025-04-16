@@ -23,6 +23,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtGuard } from '@auth/guards';
 import { MailModule } from '@modules/common/mail/mail.module';
 import { HttpModule } from '@nestjs/axios';
+import { AdditionalInformationController } from '@auth/controllers/additional-information.controller';
+import { AdditionalInformationService } from '@auth/services/additional-information.service';
 
 @Global()
 @Module({
@@ -48,6 +50,7 @@ import { HttpModule } from '@nestjs/axios';
     MenusController,
     RolesController,
     UsersController,
+    AdditionalInformationController,
   ],
   providers: [
     {
@@ -61,6 +64,7 @@ import { HttpModule } from '@nestjs/axios';
     UsersService,
     MenusService,
     JwtStrategy,
+    AdditionalInformationService,
   ],
   exports: [
     ...authProviders,

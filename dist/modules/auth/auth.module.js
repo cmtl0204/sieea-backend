@@ -22,6 +22,8 @@ const core_1 = require("@nestjs/core");
 const guards_1 = require("./guards");
 const mail_module_1 = require("../common/mail/mail.module");
 const axios_1 = require("@nestjs/axios");
+const additional_information_controller_1 = require("./controllers/additional-information.controller");
+const additional_information_service_1 = require("./services/additional-information.service");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -50,6 +52,7 @@ exports.AuthModule = AuthModule = __decorate([
             menus_controller_1.MenusController,
             controllers_1.RolesController,
             controllers_1.UsersController,
+            additional_information_controller_1.AdditionalInformationController,
         ],
         providers: [
             {
@@ -63,6 +66,7 @@ exports.AuthModule = AuthModule = __decorate([
             users_service_1.UsersService,
             services_1.MenusService,
             strategies_1.JwtStrategy,
+            additional_information_service_1.AdditionalInformationService,
         ],
         exports: [
             ...providers_1.authProviders,

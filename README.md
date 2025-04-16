@@ -118,6 +118,8 @@ $ npm i passport-jwt @types/passport-jwt
 $ npm install @nestjs/cache-manager cache-manager
 $ npm i --save @nestjs/axios axios
 $ npm i joi
+$ npm install exceljs
+$ npm install --save-dev @types/exceljs
 $ mau deploy
 ```
 
