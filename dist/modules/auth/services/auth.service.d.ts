@@ -2,13 +2,14 @@ import { HttpService } from '@nestjs/axios';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { UserEntity, TransactionalCodeEntity } from '@auth/entities';
-import { LoginDto, PasswordChangeDto, ReadProfileDto, ReadUserInformationDto, UpdateProfileDto, UpdateUserInformationDto } from '@auth/dto';
+import { PasswordChangeDto, ReadProfileDto, ReadUserInformationDto, UpdateProfileDto, UpdateUserInformationDto } from '@auth/dto';
 import { ServiceResponseHttpModel } from '@shared/interfaces';
 import { MailService } from '@modules/common/mail/mail.service';
 import { config } from '@config';
 import { ConfigType } from '@nestjs/config';
 import { UsersService } from './users.service';
 import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
+import { SignInDto } from '@auth/dto/auth/sign-in.dto';
 export declare class AuthService {
     private repository;
     private transactionalCodeRepository;
@@ -21,7 +22,8 @@ export declare class AuthService {
     private readonly MAX_ATTEMPTS;
     constructor(repository: Repository<UserEntity>, transactionalCodeRepository: Repository<TransactionalCodeEntity>, repositoryAdditionalInformation: Repository<AdditionalInformationEntity>, configService: ConfigType<typeof config>, userService: UsersService, jwtService: JwtService, nodemailerService: MailService, httpService: HttpService);
     changePassword(id: string, payload: PasswordChangeDto): Promise<boolean>;
-    signIn(payload: LoginDto): Promise<ServiceResponseHttpModel>;
+    signIn(payload: SignInDto): Promise<ServiceResponseHttpModel>;
+    signInLDAP(payload: SignInDto): Promise<boolean>;
     findProfile(id: string): Promise<ServiceResponseHttpModel>;
     findUserInformation(id: string): Promise<ReadUserInformationDto>;
     updateUserInformation(id: string, payload: UpdateUserInformationDto): Promise<ReadUserInformationDto>;

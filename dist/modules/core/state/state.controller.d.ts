@@ -3,6 +3,7 @@ import { StateService } from '@modules/core/state/state.service';
 export declare class StateController {
     private service;
     constructor(service: StateService);
-    findActivitiesByAdditionalInformation(additionalInformationId: string): Promise<ResponseHttpModel>;
-    leerExcel(file: Express.Multer.File): Promise<any[]>;
+    findActivitiesByIdentification(identification: string): Promise<ResponseHttpModel>;
+    createCommentary(identification: string, payload: any): Promise<ResponseHttpModel>;
+    leerExcel(file: Express.Multer.File): Promise<any>;
 }

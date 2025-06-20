@@ -32,4 +32,5 @@ export declare class StateEntity {
     cantidadC1: string;
     cantidadC2: string;
     cumple: string;
+    comentario: string;
 }

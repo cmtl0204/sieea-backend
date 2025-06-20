@@ -21,6 +21,7 @@ export declare const config: (() => {
     recaptchaSiteSecret: string | undefined;
     port: number;
     appUrl: string | undefined;
+    urlLDAP: string | undefined;
 }) & import("@nestjs/config").ConfigFactoryKeyHost<{
     database: {
         database: string | undefined;
@@ -44,4 +45,5 @@ export declare const config: (() => {
     recaptchaSiteSecret: string | undefined;
     port: number;
     appUrl: string | undefined;
+    urlLDAP: string | undefined;
 }>;

@@ -27,6 +27,7 @@ exports.config = (0, config_1.registerAs)('config', () => {
         recaptchaSiteSecret: process.env.RECAPTCHA_SITE_SECRET,
         port: parseInt(process.env.PORT, 10),
         appUrl: process.env.APP_URL,
+        urlLDAP: process.env.URL_LDAP,
     };
 });
 //# sourceMappingURL=config.js.map

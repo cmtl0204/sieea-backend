@@ -22,9 +22,12 @@ let StateService = class StateService {
     constructor(repository) {
         this.repository = repository;
     }
-    async findStatesByAdditionalInformation(additionalInformationId) {
-        return await this.repository.findOne({
-            where: { additionalInformationId },
+    async findStatesByIdentification(identification) {
+        return await this.repository.find({
+            where: [
+                { cedula: (0, typeorm_1.ILike)(`%${identification}%`) },
+                { nombres: (0, typeorm_1.ILike)(`%${identification}%`) },
+            ],
         });
     }
     async readExcel(file) {
@@ -49,6 +52,14 @@ let StateService = class StateService {
             console.log({ id, cedula, nombre });
         }
         return rows;
+    }
+    async createCommentary(identification, payload) {
+        const entity = await this.repository.findOneBy({ cedula: identification });
+        if (!entity) {
+            throw new common_1.NotFoundException();
+        }
+        entity.comentario = payload.commentary;
+        return await this.repository.save(entity);
     }
 };
 exports.StateService = StateService;

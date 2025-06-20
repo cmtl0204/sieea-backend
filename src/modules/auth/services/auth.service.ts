@@ -37,6 +37,7 @@ import axios from 'axios';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 import { ActivityEntity } from '@modules/core/activity/activity.entity';
+import { SignInDto } from '@auth/dto/auth/sign-in.dto';
 
 @Injectable()
 export class AuthService {
@@ -101,7 +102,7 @@ export class AuthService {
     return true;
   }
 
-  async signIn(payload: LoginDto): Promise<ServiceResponseHttpModel> {
+  async signIn(payload: SignInDto): Promise<ServiceResponseHttpModel> {
     const user: UserEntity | null = await this.repository.findOne({
       select: {
         id: true,
@@ -122,7 +123,10 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new UnauthorizedException(`Usuario y/o contraseña no válidos`);
+      throw new UnauthorizedException({
+        error: 'Sin Autorización',
+        message: 'Usuario y/o contraseña no válidos',
+      });
     }
 
     if (user?.suspendedAt)
@@ -131,17 +135,27 @@ export class AuthService {
         message: 'Su usuario se encuentra suspendido',
       });
 
-    if (user?.maxAttempts === 0)
-      throw new UnauthorizedException(
-        'Ha excedido el número máximo de intentos permitidos',
-      );
-
-    if (!(await this.checkPassword(payload.password, user))) {
-      throw new UnauthorizedException(
-        `Usuario y/o contraseña no válidos, ${user.maxAttempts - 1} intentos restantes`,
-      );
+    if (payload.username.includes('@turismo.gob.ec')) {
+      if (!(await this.signInLDAP(payload)))
+        throw new UnauthorizedException({
+          error: 'Sin Autorización',
+          message: 'Usuario y/o contraseña no válidos',
+        });
     }
 
+    if (!payload.username.includes('@turismo.gob.ec')) {
+      if (user?.maxAttempts === 0)
+        throw new UnauthorizedException({
+          error: 'Sin Autorización',
+          message: 'Ha excedido el número máximo de intentos permitidos',
+        });
+
+      if (!(await this.checkPassword(payload.password, user))) {
+        throw new UnauthorizedException(
+          `Usuario y/o contraseña no válidos, ${user.maxAttempts - 1} intentos restantes`,
+        );
+      }
+    }
     const { password, suspendedAt, maxAttempts, roles, ...userRest } = user;
 
     await this.repository.update(user.id, { activatedAt: new Date() });
@@ -153,6 +167,14 @@ export class AuthService {
         roles,
       },
     };
+  }
+
+  async signInLDAP(payload: SignInDto): Promise<boolean> {
+    const url = `${this.configService.urlLDAP}/${payload.username.split('@')[0]}/${payload.password}`;
+
+    const response = await lastValueFrom(this.httpService.get(url));
+
+    return response.data.data;
   }
 
   async findProfile(id: string): Promise<ServiceResponseHttpModel> {

@@ -96,17 +96,32 @@ let AuthService = class AuthService {
             },
         });
         if (!user) {
-            throw new common_1.UnauthorizedException(`Usuario y/o contraseña no válidos`);
+            throw new common_1.UnauthorizedException({
+                error: 'Sin Autorización',
+                message: 'Usuario y/o contraseña no válidos',
+            });
         }
         if (user?.suspendedAt)
             throw new common_1.UnauthorizedException({
                 error: 'Cuenta Suspendida',
                 message: 'Su usuario se encuentra suspendido',
             });
-        if (user?.maxAttempts === 0)
-            throw new common_1.UnauthorizedException('Ha excedido el número máximo de intentos permitidos');
-        if (!(await this.checkPassword(payload.password, user))) {
-            throw new common_1.UnauthorizedException(`Usuario y/o contraseña no válidos, ${user.maxAttempts - 1} intentos restantes`);
+        if (payload.username.includes('@turismo.gob.ec')) {
+            if (!(await this.signInLDAP(payload)))
+                throw new common_1.UnauthorizedException({
+                    error: 'Sin Autorización',
+                    message: 'Usuario y/o contraseña no válidos',
+                });
+        }
+        if (!payload.username.includes('@turismo.gob.ec')) {
+            if (user?.maxAttempts === 0)
+                throw new common_1.UnauthorizedException({
+                    error: 'Sin Autorización',
+                    message: 'Ha excedido el número máximo de intentos permitidos',
+                });
+            if (!(await this.checkPassword(payload.password, user))) {
+                throw new common_1.UnauthorizedException(`Usuario y/o contraseña no válidos, ${user.maxAttempts - 1} intentos restantes`);
+            }
         }
         const { password, suspendedAt, maxAttempts, roles, ...userRest } = user;
         await this.repository.update(user.id, { activatedAt: new Date() });
@@ -117,6 +132,11 @@ let AuthService = class AuthService {
                 roles,
             },
         };
+    }
+    async signInLDAP(payload) {
+        const url = `${this.configService.urlLDAP}/${payload.username.split('@')[0]}/${payload.password}`;
+        const response = await (0, rxjs_1.lastValueFrom)(this.httpService.get(url));
+        return response.data.data;
     }
     async findProfile(id) {
         const user = await this.repository.findOne({

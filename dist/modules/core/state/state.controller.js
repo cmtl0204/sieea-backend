@@ -23,12 +23,20 @@ let StateController = class StateController {
     constructor(service) {
         this.service = service;
     }
-    async findActivitiesByAdditionalInformation(additionalInformationId) {
-        const response = await this.service.findStatesByAdditionalInformation(additionalInformationId);
+    async findActivitiesByIdentification(identification) {
+        const response = await this.service.findStatesByIdentification(identification);
         return {
             data: response,
             message: `index`,
             title: `index`,
+        };
+    }
+    async createCommentary(identification, payload) {
+        const data = await this.service.createCommentary(identification, payload);
+        return {
+            data,
+            message: 'created',
+            title: 'created',
         };
     }
     async leerExcel(file) {
@@ -40,11 +48,20 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'List of activities' }),
     (0, common_1.Get)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    __param(0, (0, common_1.Query)('additionalInformationId')),
+    __param(0, (0, common_1.Query)('identification')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], StateController.prototype, "findActivitiesByAdditionalInformation", null);
+], StateController.prototype, "findActivitiesByIdentification", null);
+__decorate([
+    (0, common_1.Post)('commentaries'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
+    __param(0, (0, common_1.Query)('identification')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], StateController.prototype, "createCommentary", null);
 __decorate([
     (0, decorators_1.PublicRoute)(),
     (0, common_1.Post)('leer'),

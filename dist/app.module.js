@@ -43,6 +43,7 @@ exports.AppModule = AppModule = __decorate([
                     MAIL_USERNAME: Joi.string().required(),
                     MAIL_PASSWORD: Joi.string().required(),
                     MAIL_FROM_ADDRESS: Joi.string().required(),
+                    URL_LDAP: Joi.string().required(),
                 }),
             }),
             platform_express_1.MulterModule.register({ dest: './uploads' }),

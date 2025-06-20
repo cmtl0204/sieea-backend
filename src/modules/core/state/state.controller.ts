@@ -9,7 +9,9 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
-  Query, UploadedFile, UseInterceptors,
+  Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ResponseHttpModel } from '@shared/interfaces';
@@ -27,17 +29,32 @@ export class StateController {
   @ApiOperation({ summary: 'List of activities' })
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findActivitiesByAdditionalInformation(
-    @Query('additionalInformationId') additionalInformationId: string,
+  async findActivitiesByIdentification(
+    @Query('identification') identification: string,
   ): Promise<ResponseHttpModel> {
-    const response = await this.service.findStatesByAdditionalInformation(
-      additionalInformationId,
+    const response = await this.service.findStatesByIdentification(
+      identification,
     );
 
     return {
       data: response,
       message: `index`,
       title: `index`,
+    };
+  }
+
+  @Post('commentaries')
+  @HttpCode(HttpStatus.CREATED)
+  async createCommentary(
+    @Query('identification') identification: string,
+    @Body() payload: any,
+  ): Promise<ResponseHttpModel> {
+    const data = await this.service.createCommentary(identification, payload);
+
+    return {
+      data,
+      message: 'created',
+      title: 'created',
     };
   }
 

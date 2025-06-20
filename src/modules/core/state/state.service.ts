@@ -1,5 +1,5 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ILike, Repository } from 'typeorm';
 import { CoreRepositoryEnum } from '@shared/enums';
 import { StateEntity } from '@modules/core/state/state.entity';
 import * as ExcelJS from 'exceljs';
@@ -11,15 +11,18 @@ export class StateService {
     private repository: Repository<StateEntity>,
   ) {}
 
-  async findStatesByAdditionalInformation(
-    additionalInformationId: string,
-  ): Promise<StateEntity | null> {
-    return await this.repository.findOne({
-      where: { additionalInformationId },
+  async findStatesByIdentification(
+    identification: string,
+  ): Promise<StateEntity[]> {
+    return await this.repository.find({
+      where: [
+        { cedula: ILike(`%${identification}%`) },
+        { nombres: ILike(`%${identification}%`) },
+      ],
     });
   }
 
-  async readExcel(file: Express.Multer.File): Promise<any[]> {
+  async readExcel(file: Express.Multer.File): Promise<any> {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(file.buffer);
 
@@ -48,5 +51,17 @@ export class StateService {
     }
 
     return rows;
+  }
+
+  async createCommentary(identification: string, payload: any) {
+    const entity = await this.repository.findOneBy({ cedula: identification });
+
+    if (!entity) {
+      throw new NotFoundException();
+    }
+
+    entity.comentario = payload.commentary;
+
+    return await this.repository.save(entity);
   }
 }

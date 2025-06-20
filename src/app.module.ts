@@ -35,6 +35,7 @@ import { CoreModule } from '@modules/core/core.module';
         MAIL_USERNAME: Joi.string().required(),
         MAIL_PASSWORD: Joi.string().required(),
         MAIL_FROM_ADDRESS: Joi.string().required(),
+        URL_LDAP: Joi.string().required(),
       }),
     }),
     MulterModule.register({ dest: './uploads' }),

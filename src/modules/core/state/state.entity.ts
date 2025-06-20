@@ -221,4 +221,11 @@ export class StateEntity {
     type: 'varchar',
   })
   cumple: string;
+
+  @Column({
+    name: 'comentario',
+    type: 'text',
+    nullable: true,
+  })
+  comentario: string;
 }

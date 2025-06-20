@@ -45,6 +45,7 @@ let StateEntity = class StateEntity {
     cantidadC1;
     cantidadC2;
     cumple;
+    comentario;
 };
 exports.StateEntity = StateEntity;
 __decorate([
@@ -285,6 +286,14 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], StateEntity.prototype, "cumple", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        name: 'comentario',
+        type: 'text',
+        nullable: true,
+    }),
+    __metadata("design:type", String)
+], StateEntity.prototype, "comentario", void 0);
 exports.StateEntity = StateEntity = __decorate([
     (0, typeorm_1.Entity)('states', { schema: 'core' })
 ], StateEntity);
