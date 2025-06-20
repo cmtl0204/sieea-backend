@@ -1,0 +1,35 @@
+import { UserEntity } from '@auth/entities';
+import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
+export declare class StateEntity {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    deletedAt: Date;
+    enabled: boolean;
+    additionalInformation: AdditionalInformationEntity;
+    additionalInformationId: string;
+    user: UserEntity;
+    userId: string;
+    habilitado: string;
+    direccionZonal: string;
+    provincia: string;
+    cedula: string;
+    nombres: string;
+    actividad: string;
+    curso: string;
+    actividadA1: string;
+    actividadA2: string;
+    metaA1: string;
+    metaA2: string;
+    actividadB1: string;
+    actividadB2: string;
+    metaB1: string;
+    metaB2: string;
+    cantidadA1: string;
+    cantidadA2: string;
+    cantidadB1: string;
+    cantidadB2: string;
+    cantidadC1: string;
+    cantidadC2: string;
+    cumple: string;
+}

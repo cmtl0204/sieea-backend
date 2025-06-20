@@ -15,7 +15,8 @@ export declare enum CommonRepositoryEnum {
 }
 export declare enum CoreRepositoryEnum {
     PARTICIPANT_REPOSITORY = "PARTICIPANT_REPOSITORY",
-    ACTIVITY_REPOSITORY = "ACTIVITY_REPOSITORY"
+    ACTIVITY_REPOSITORY = "ACTIVITY_REPOSITORY",
+    STATE_REPOSITORY = "STATE_REPOSITORY"
 }
 export declare enum TeacherEvaluationRepositoryEnum {
     QUESTION_REPOSITORY = "QUESTION_REPOSITORY",

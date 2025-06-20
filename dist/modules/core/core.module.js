@@ -12,6 +12,7 @@ const catalogue_module_1 = require("../common/catalogue/catalogue.module");
 const file_module_1 = require("../common/file/file.module");
 const mail_module_1 = require("../common/mail/mail.module");
 const activity_module_1 = require("./activity/activity.module");
+const state_module_1 = require("./state/state.module");
 let CoreModule = class CoreModule {
 };
 exports.CoreModule = CoreModule;
@@ -23,6 +24,7 @@ exports.CoreModule = CoreModule = __decorate([
             file_module_1.FileModule,
             mail_module_1.MailModule,
             activity_module_1.ActivityModule,
+            state_module_1.StateModule,
         ],
         exports: [catalogue_module_1.CatalogueModule, file_module_1.FileModule, mail_module_1.MailModule],
     })

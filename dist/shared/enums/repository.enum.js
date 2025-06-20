@@ -22,6 +22,7 @@ var CoreRepositoryEnum;
 (function (CoreRepositoryEnum) {
     CoreRepositoryEnum["PARTICIPANT_REPOSITORY"] = "PARTICIPANT_REPOSITORY";
     CoreRepositoryEnum["ACTIVITY_REPOSITORY"] = "ACTIVITY_REPOSITORY";
+    CoreRepositoryEnum["STATE_REPOSITORY"] = "STATE_REPOSITORY";
 })(CoreRepositoryEnum || (exports.CoreRepositoryEnum = CoreRepositoryEnum = {}));
 var TeacherEvaluationRepositoryEnum;
 (function (TeacherEvaluationRepositoryEnum) {

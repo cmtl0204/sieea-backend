@@ -1,0 +1,1 @@
+{"version":3,"file":"state.provider.js","sourceRoot":"","sources":["../../../../src/modules/core/state/state.provider.ts"],"names":[],"mappings":";;;AACA,iDAA+D;AAC/D,iDAA6C;AAEhC,QAAA,aAAa,GAAG;IAC3B,OAAO,EAAE,0BAAkB,CAAC,gBAAgB;IAC5C,UAAU,EAAE,CAAC,UAAsB,EAAE,EAAE,CAAC,UAAU,CAAC,aAAa,CAAC,0BAAW,CAAC;IAC7E,MAAM,EAAE,CAAC,kBAAU,CAAC,cAAc,CAAC;CACpC,CAAC"}
