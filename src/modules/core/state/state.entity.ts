@@ -115,6 +115,7 @@ export class StateEntity {
   @Column({
     name: 'curso',
     type: 'varchar',
+    nullable: true,
   })
   curso: string;
 
@@ -175,6 +176,20 @@ export class StateEntity {
   metaB2: string;
 
   @Column({
+    name: 'meta_c_1',
+    type: 'varchar',
+    nullable: true,
+  })
+  metaC1: string;
+
+  @Column({
+    name: 'meta_c_2',
+    type: 'varchar',
+    nullable: true,
+  })
+  metaC2: string;
+
+  @Column({
     name: 'cantidad_a_1',
     type: 'varchar',
     nullable: true,
@@ -215,6 +230,20 @@ export class StateEntity {
     nullable: true,
   })
   cantidadC2: string;
+
+  @Column({
+    name: 'total_cantidad_abril',
+    type: 'varchar',
+    nullable: true,
+  })
+  totalCantidadAbril: string;
+
+  @Column({
+    name: 'total_cantidad_mayo',
+    type: 'varchar',
+    nullable: true,
+  })
+  totalCantidadMayo: string;
 
   @Column({
     name: 'cumple',

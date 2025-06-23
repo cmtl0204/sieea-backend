@@ -38,12 +38,16 @@ let StateEntity = class StateEntity {
     actividadB2;
     metaB1;
     metaB2;
+    metaC1;
+    metaC2;
     cantidadA1;
     cantidadA2;
     cantidadB1;
     cantidadB2;
     cantidadC1;
     cantidadC2;
+    totalCantidadAbril;
+    totalCantidadMayo;
     cumple;
     comentario;
 };
@@ -164,6 +168,7 @@ __decorate([
     (0, typeorm_1.Column)({
         name: 'curso',
         type: 'varchar',
+        nullable: true,
     }),
     __metadata("design:type", String)
 ], StateEntity.prototype, "curso", void 0);
@@ -233,6 +238,22 @@ __decorate([
 ], StateEntity.prototype, "metaB2", void 0);
 __decorate([
     (0, typeorm_1.Column)({
+        name: 'meta_c_1',
+        type: 'varchar',
+        nullable: true,
+    }),
+    __metadata("design:type", String)
+], StateEntity.prototype, "metaC1", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        name: 'meta_c_2',
+        type: 'varchar',
+        nullable: true,
+    }),
+    __metadata("design:type", String)
+], StateEntity.prototype, "metaC2", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
         name: 'cantidad_a_1',
         type: 'varchar',
         nullable: true,
@@ -279,6 +300,22 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], StateEntity.prototype, "cantidadC2", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        name: 'total_cantidad_abril',
+        type: 'varchar',
+        nullable: true,
+    }),
+    __metadata("design:type", String)
+], StateEntity.prototype, "totalCantidadAbril", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        name: 'total_cantidad_mayo',
+        type: 'varchar',
+        nullable: true,
+    }),
+    __metadata("design:type", String)
+], StateEntity.prototype, "totalCantidadMayo", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         name: 'cumple',

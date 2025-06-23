@@ -25,12 +25,16 @@ export declare class StateEntity {
     actividadB2: string;
     metaB1: string;
     metaB2: string;
+    metaC1: string;
+    metaC2: string;
     cantidadA1: string;
     cantidadA2: string;
     cantidadB1: string;
     cantidadB2: string;
     cantidadC1: string;
     cantidadC2: string;
+    totalCantidadAbril: string;
+    totalCantidadMayo: string;
     cumple: string;
     comentario: string;
 }
