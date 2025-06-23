@@ -30,6 +30,7 @@ let StateService = class StateService {
                 { cedula: (0, typeorm_1.ILike)(`%${identification}%`) },
                 { nombres: (0, typeorm_1.ILike)(`%${identification}%`) },
             ],
+            take: 1000,
         });
     }
     async readExcel(file) {
