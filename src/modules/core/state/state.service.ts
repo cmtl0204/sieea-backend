@@ -22,7 +22,7 @@ export class StateService {
         { cedula: ILike(`%${identification}%`) },
         { nombres: ILike(`%${identification}%`) },
       ],
-      take: 1000,
+      take: 500,
     });
   }
 
