@@ -624,8 +624,6 @@ export class AuthService {
 
     let i = 0;
     for (const item of additionalInformations) {
-      console.log(i++);
-
       cedulaError = item.cedula;
       const url = `http://192.168.20.22:8080/servicio-rest-dinardap-v2-1/rest/dinardap/registro-civil/${item.cedula}`;
 

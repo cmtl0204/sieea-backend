@@ -34,9 +34,7 @@ let AllExceptionsFilter = class AllExceptionsFilter {
                 errorResponseHttpModel.error = 'Datos no válidos';
                 errorResponseHttpModel.message = message;
             }
-            console.log('1');
             if (exception instanceof common_1.UnauthorizedException) {
-                console.log('2');
                 errorResponseHttpModel.error = 'Credenciales no válidas';
                 errorResponseHttpModel.message =
                     message ?? 'You do not have authorization.';

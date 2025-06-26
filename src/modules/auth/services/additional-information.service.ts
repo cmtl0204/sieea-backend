@@ -35,8 +35,6 @@ export class AdditionalInformationService {
       const id = row.getCell(headerMap['id']).value;
       const cedula = row.getCell(headerMap['cedula']).value;
       const nombre = row.getCell(headerMap['nombre']).value;
-
-      console.log({ id, cedula, nombre });
     }
     return rows;
   }
