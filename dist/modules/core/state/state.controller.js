@@ -39,6 +39,14 @@ let StateController = class StateController {
             title: 'created',
         };
     }
+    async review(identification) {
+        const data = await this.service.createReview(identification);
+        return {
+            data,
+            message: 'Teléfonos consultados',
+            title: 'Consulta',
+        };
+    }
     async leerExcel(file) {
         return this.service.readExcel(file);
     }
@@ -62,6 +70,14 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], StateController.prototype, "createCommentary", null);
+__decorate([
+    (0, common_1.Post)('reviews'),
+    (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
+    __param(0, (0, common_1.Query)('identification')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], StateController.prototype, "review", null);
 __decorate([
     (0, decorators_1.PublicRoute)(),
     (0, common_1.Post)('leer'),

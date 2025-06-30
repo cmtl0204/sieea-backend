@@ -155,6 +155,17 @@ let StateService = class StateService {
         entity.comentario = payload.commentary;
         return await this.repository.save(entity);
     }
+    async createReview(identification) {
+        const entity = await this.repository.findOneBy({ cedula: identification });
+        if (!entity) {
+            throw new common_1.NotFoundException();
+        }
+        if (!entity.clickCount)
+            entity.clickCount = 1;
+        else
+            entity.clickCount = entity.clickCount + 1;
+        return await this.repository.save(entity);
+    }
 };
 exports.StateService = StateService;
 exports.StateService = StateService = __decorate([

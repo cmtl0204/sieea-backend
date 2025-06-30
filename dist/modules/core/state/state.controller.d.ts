@@ -5,5 +5,6 @@ export declare class StateController {
     constructor(service: StateService);
     findActivitiesByIdentification(identification: string): Promise<ResponseHttpModel>;
     createCommentary(identification: string, payload: any): Promise<ResponseHttpModel>;
+    review(identification: string): Promise<ResponseHttpModel>;
     leerExcel(file: Express.Multer.File): Promise<any>;
 }

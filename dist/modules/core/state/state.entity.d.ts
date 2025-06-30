@@ -37,4 +37,5 @@ export declare class StateEntity {
     totalCantidadMayo: string;
     cumple: string;
     comentario: string;
+    clickCount: number;
 }

@@ -257,4 +257,11 @@ export class StateEntity {
     nullable: true,
   })
   comentario: string;
+
+  @Column({
+    name: 'click_count',
+    type: 'integer',
+    nullable: true,
+  })
+  clickCount: number;
 }

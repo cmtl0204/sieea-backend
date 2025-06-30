@@ -1,0 +1,1 @@
+{"version":3,"file":"kpi.provider.js","sourceRoot":"","sources":["../../../../src/modules/core/kpi/kpi.provider.ts"],"names":[],"mappings":";;;AACA,iDAA+D;AAC/D,6CAAyC;AAE5B,QAAA,WAAW,GAAG;IACzB,OAAO,EAAE,0BAAkB,CAAC,gBAAgB;IAC5C,UAAU,EAAE,CAAC,UAAsB,EAAE,EAAE,CAAC,UAAU,CAAC,aAAa,CAAC,sBAAS,CAAC;IAC3E,MAAM,EAAE,CAAC,kBAAU,CAAC,cAAc,CAAC;CACpC,CAAC"}

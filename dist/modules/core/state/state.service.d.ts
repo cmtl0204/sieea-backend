@@ -8,4 +8,5 @@ export declare class StateService {
     findStatesByIdentification(identification: string): Promise<StateEntity[]>;
     readExcel(file: Express.Multer.File): Promise<any>;
     createCommentary(identification: string, payload: any): Promise<StateEntity>;
+    createReview(identification: string): Promise<StateEntity>;
 }

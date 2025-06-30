@@ -165,4 +165,17 @@ export class StateService {
 
     return await this.repository.save(entity);
   }
+
+  async createReview(identification: string) {
+    const entity = await this.repository.findOneBy({ cedula: identification });
+
+    if (!entity) {
+      throw new NotFoundException();
+    }
+
+    if (!entity.clickCount) entity.clickCount = 1;
+    else entity.clickCount = entity.clickCount + 1;
+
+    return await this.repository.save(entity);
+  }
 }

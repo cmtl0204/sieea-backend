@@ -1,21 +1,16 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   HttpCode,
   HttpStatus,
-  Param,
-  ParseUUIDPipe,
   Post,
-  Put,
   Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ResponseHttpModel } from '@shared/interfaces';
-import { UpdateCatalogueDto } from '@modules/common/catalogue/dto';
 import { Auth, PublicRoute } from '@auth/decorators';
 import { StateService } from '@modules/core/state/state.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -32,9 +27,8 @@ export class StateController {
   async findActivitiesByIdentification(
     @Query('identification') identification: string,
   ): Promise<ResponseHttpModel> {
-    const response = await this.service.findStatesByIdentification(
-      identification,
-    );
+    const response =
+      await this.service.findStatesByIdentification(identification);
 
     return {
       data: response,
@@ -55,6 +49,20 @@ export class StateController {
       data,
       message: 'created',
       title: 'created',
+    };
+  }
+
+  @Post('reviews')
+  @HttpCode(HttpStatus.CREATED)
+  async review(
+    @Query('identification') identification: string,
+  ): Promise<ResponseHttpModel> {
+    const data = await this.service.createReview(identification);
+
+    return {
+      data,
+      message: 'Teléfonos consultados',
+      title: 'Consulta',
     };
   }
 
