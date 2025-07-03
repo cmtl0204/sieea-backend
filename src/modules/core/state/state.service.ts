@@ -176,6 +176,10 @@ export class StateService {
     if (!entity.clickCount) entity.clickCount = 1;
     else entity.clickCount = entity.clickCount + 1;
 
+    entity.transactionalCode = Math.floor(1000 + Math.random() * 9000).toString(
+      10,
+    );
+
     return await this.repository.save(entity);
   }
 }

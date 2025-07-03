@@ -264,4 +264,11 @@ export class StateEntity {
     nullable: true,
   })
   clickCount: number;
+
+  @Column({
+    name: 'transactional_code',
+    type: 'varchar',
+    nullable: true,
+  })
+  transactionalCode: string;
 }

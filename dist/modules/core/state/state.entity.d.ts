@@ -38,4 +38,5 @@ export declare class StateEntity {
     cumple: string;
     comentario: string;
     clickCount: number;
+    transactionalCode: string;
 }

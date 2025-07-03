@@ -51,6 +51,7 @@ let StateEntity = class StateEntity {
     cumple;
     comentario;
     clickCount;
+    transactionalCode;
 };
 exports.StateEntity = StateEntity;
 __decorate([
@@ -340,6 +341,14 @@ __decorate([
     }),
     __metadata("design:type", Number)
 ], StateEntity.prototype, "clickCount", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        name: 'transactional_code',
+        type: 'varchar',
+        nullable: true,
+    }),
+    __metadata("design:type", String)
+], StateEntity.prototype, "transactionalCode", void 0);
 exports.StateEntity = StateEntity = __decorate([
     (0, typeorm_1.Entity)('states', { schema: 'core' })
 ], StateEntity);
