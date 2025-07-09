@@ -13,6 +13,8 @@ import { CommonModule } from '@modules/common/common.module';
 import { CoreModule } from '@modules/core/core.module';
 // import { ReportsModule } from '@modules/reports/report.module';
 // import { ImportsModule } from '@modules/imports/import.module';
+import { WinstonModule } from 'nest-winston';
+import * as winston from 'winston';
 
 @Module({
   imports: [
@@ -37,6 +39,25 @@ import { CoreModule } from '@modules/core/core.module';
         MAIL_FROM_ADDRESS: Joi.string().required(),
         URL_LDAP: Joi.string().required(),
       }),
+    }),
+    WinstonModule.forRoot({
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.simple(),
+          ),
+        }),
+        new winston.transports.File({
+          filename: 'logs/app.log',
+          format: winston.format.combine(
+            winston.format.timestamp(),
+            winston.format.printf(({ timestamp, level, message }) => {
+              return `[${timestamp}] ${level}: ${message}`;
+            }),
+          ),
+        }),
+      ],
     }),
     MulterModule.register({ dest: './uploads' }),
     HttpModule,

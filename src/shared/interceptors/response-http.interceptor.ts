@@ -20,7 +20,7 @@ export class ResponseHttpInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<Response<T>> {
-    if (false) {
+    if (true) {
       throw new ServiceUnavailableException();
     }
 

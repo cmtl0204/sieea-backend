@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 const operators_1 = require("rxjs/operators");
 let ResponseHttpInterceptor = class ResponseHttpInterceptor {
     intercept(context, next) {
-        if (false) {
+        if (true) {
             throw new common_1.ServiceUnavailableException();
         }
         return next.handle().pipe((0, operators_1.map)((response) => {

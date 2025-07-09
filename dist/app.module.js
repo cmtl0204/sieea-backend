@@ -18,6 +18,8 @@ const _config_1 = require("./config");
 const auth_module_1 = require("./modules/auth/auth.module");
 const common_module_1 = require("./modules/common/common.module");
 const core_module_1 = require("./modules/core/core.module");
+const nest_winston_1 = require("nest-winston");
+const winston = require("winston");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -45,6 +47,19 @@ exports.AppModule = AppModule = __decorate([
                     MAIL_FROM_ADDRESS: Joi.string().required(),
                     URL_LDAP: Joi.string().required(),
                 }),
+            }),
+            nest_winston_1.WinstonModule.forRoot({
+                transports: [
+                    new winston.transports.Console({
+                        format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
+                    }),
+                    new winston.transports.File({
+                        filename: 'logs/app.log',
+                        format: winston.format.combine(winston.format.timestamp(), winston.format.printf(({ timestamp, level, message }) => {
+                            return `[${timestamp}] ${level}: ${message}`;
+                        })),
+                    }),
+                ],
             }),
             platform_express_1.MulterModule.register({ dest: './uploads' }),
             axios_1.HttpModule,
