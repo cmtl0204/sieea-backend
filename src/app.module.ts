@@ -13,8 +13,6 @@ import { CommonModule } from '@modules/common/common.module';
 import { CoreModule } from '@modules/core/core.module';
 // import { ReportsModule } from '@modules/reports/report.module';
 // import { ImportsModule } from '@modules/imports/import.module';
-import { WinstonModule } from 'nest-winston';
-import * as winston from 'winston';
 
 @Module({
   imports: [
