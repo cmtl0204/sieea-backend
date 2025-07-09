@@ -11,7 +11,7 @@ export class StateService {
     @Inject(CoreRepositoryEnum.STATE_REPOSITORY)
     private repository: Repository<StateEntity>,
     @Inject(AuthRepositoryEnum.USER_REPOSITORY)
-    private userRepository: Repository<UserEntity>
+    private userRepository: Repository<UserEntity>,
   ) {}
 
   async findStatesByIdentification(
@@ -51,7 +51,7 @@ export class StateService {
 
     for (let i = 2; i <= worksheet.rowCount; i++) {
       const row = worksheet.getRow(i);
-
+      console.log(i);
       const cedula = row.getCell(headerMap['cedula']).value?.toString();
 
       let entity = await this.repository.findOneBy({

@@ -52,6 +52,7 @@ let StateService = class StateService {
         });
         for (let i = 2; i <= worksheet.rowCount; i++) {
             const row = worksheet.getRow(i);
+            console.log(i);
             const cedula = row.getCell(headerMap['cedula']).value?.toString();
             let entity = await this.repository.findOneBy({
                 cedula,
