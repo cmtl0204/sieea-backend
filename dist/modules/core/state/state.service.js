@@ -17,15 +17,12 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const enums_1 = require("../../../shared/enums");
 const ExcelJS = require("exceljs");
-const nest_winston_1 = require("nest-winston");
 let StateService = class StateService {
     repository;
     userRepository;
-    logger;
-    constructor(repository, userRepository, logger) {
+    constructor(repository, userRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
-        this.logger = logger;
     }
     async findStatesByIdentification(identification) {
         return await this.repository.find({
@@ -55,7 +52,6 @@ let StateService = class StateService {
         });
         for (let i = 2; i <= worksheet.rowCount; i++) {
             const row = worksheet.getRow(i);
-            console.log(i);
             const cedula = row.getCell(headerMap['cedula']).value?.toString();
             let entity = await this.repository.findOneBy({
                 cedula,
@@ -177,8 +173,7 @@ exports.StateService = StateService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(enums_1.CoreRepositoryEnum.STATE_REPOSITORY)),
     __param(1, (0, common_1.Inject)(enums_1.AuthRepositoryEnum.USER_REPOSITORY)),
-    __param(2, (0, common_1.Inject)(nest_winston_1.WINSTON_MODULE_NEST_PROVIDER)),
     __metadata("design:paramtypes", [typeorm_1.Repository,
-        typeorm_1.Repository, Object])
+        typeorm_1.Repository])
 ], StateService);
 //# sourceMappingURL=state.service.js.map

@@ -1,15 +1,9 @@
-import {
-  Inject,
-  Injectable,
-  NotFoundException,
-  LoggerService,
-} from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ILike, Repository } from 'typeorm';
 import { AuthRepositoryEnum, CoreRepositoryEnum } from '@shared/enums';
 import { StateEntity } from '@modules/core/state/state.entity';
 import * as ExcelJS from 'exceljs';
 import { UserEntity } from '@auth/entities';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 @Injectable()
 export class StateService {
@@ -17,9 +11,7 @@ export class StateService {
     @Inject(CoreRepositoryEnum.STATE_REPOSITORY)
     private repository: Repository<StateEntity>,
     @Inject(AuthRepositoryEnum.USER_REPOSITORY)
-    private userRepository: Repository<UserEntity>,
-    @Inject(WINSTON_MODULE_NEST_PROVIDER)
-    private readonly logger: LoggerService,
+    private userRepository: Repository<UserEntity>
   ) {}
 
   async findStatesByIdentification(
@@ -59,7 +51,7 @@ export class StateService {
 
     for (let i = 2; i <= worksheet.rowCount; i++) {
       const row = worksheet.getRow(i);
-      console.log(i);
+
       const cedula = row.getCell(headerMap['cedula']).value?.toString();
 
       let entity = await this.repository.findOneBy({

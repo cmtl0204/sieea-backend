@@ -79,7 +79,6 @@ let UserEntity = class UserEntity {
         this.personalEmail = this.personalEmail.toLowerCase().trim();
     }
     audit() {
-        console.log(this);
     }
 };
 exports.UserEntity = UserEntity;

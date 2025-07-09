@@ -320,6 +320,6 @@ export class UserEntity {
   @AfterUpdate()
   @AfterRemove()
   audit() {
-    console.log(this);
+    // console.log(this);
   }
 }
