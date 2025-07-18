@@ -1,6 +1,6 @@
 import { UserEntity } from '@auth/entities';
 import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
-export declare class StateBackupEntity {
+export declare class StateBackup2Entity {
     id: string;
     createdAt: Date;
     updatedAt: Date;

@@ -11,8 +11,8 @@ import {
 import { UserEntity } from '@auth/entities';
 import { AdditionalInformationEntity } from '@auth/entities/additional-information.entity';
 
-@Entity('states_backup', { schema: 'core' })
-export class StateBackupEntity {
+@Entity('states_backup_2', { schema: 'core' })
+export class StateBackup2Entity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
